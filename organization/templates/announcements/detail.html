@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ announcement.title }} | Statistics Organization
+{% endblock %}
+
+{% block content %}
+
+<article class="py-12 sm:py-16">
+  <div class="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8">
+
+    <a href="{% url 'announcements:list' %}"
+      class="inline-flex items-center text-sm font-medium text-gray-500 transition hover:text-gray-900">
+      ← Back to announcements
+    </a>
+
+    <header class="mt-8">
+
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+        <span>
+          {{ announcement.published_at|date:"F j, Y" }}
+        </span>
+
+        <span>•</span>
+
+        <span>
+          {{ announcement.author.get_full_name|default:announcement.author.username }}
+        </span>
+      </div>
+
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+        {{ announcement.title }}
+      </h1>
+
+      {% if announcement.summary %}
+      <p class="mt-5 text-lg leading-8 text-gray-600">
+        {{ announcement.summary }}
+      </p>
+      {% endif %}
+
+    </header>
+
+
+    {% if announcement.image %}
+    <div class="mt-8 overflow-hidden rounded-2xl">
+      <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}" class="w-full object-cover">
+    </div>
+    {% endif %}
+
+    <div class="prose prose-gray mt-10 max-w-none">
+      {{ announcement.content|linebreaks }}
+    </div>
+
+  </div>
+</article>
+
+{% endblock %}
