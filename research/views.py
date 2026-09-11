@@ -1,13 +1,24 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
+
+from django.db.models import Prefetch
+from django.db.models import Count, Q
+from django.db import models
 
 from .models import ResearchField, ResearchTitle, ResearchPaper
+from .services import search_research
 
 
 def home(request):
     fields = (
         ResearchField.objects
-        .prefetch_related("research_titles")
-        .all()
+        .annotate(
+            research_count=Count(
+                "research_titles",
+                filter=models.Q(research_titles__is_published=True),
+            )
+        )
+        .order_by("name")[:6]
     )
 
     recent_research = (
@@ -23,8 +34,52 @@ def home(request):
     })
 
 
-def field_list(request):
+
+
+def search(request):
+    query = request.GET.get("q", "").strip()
+    field = request.GET.get("field", "").strip()
+
+    results = search_research(
+        query=query,
+        field=field,
+    ).prefetch_related(
+        Prefetch(
+            "papers",
+            queryset=ResearchPaper.objects.only(
+                "id",
+                "research_title_id",
+                "abstract",
+            ),
+        )
+    )
+
+    paginator = Paginator(results, 8)
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     fields = ResearchField.objects.all()
+
+    return render(request, "research/search.html", {
+        "query": query,
+        "field": field,
+        "page_obj": page_obj,
+        "fields": fields,
+    })
+
+
+def field_list(request):
+    fields = (
+        ResearchField.objects
+        .annotate(
+            research_count=Count(
+                "research_titles",
+                filter=Q(research_titles__is_published=True),
+            )
+        )
+        .order_by("name")
+    )
 
     return render(request, "research/field_list.html", {
         "fields": fields,
@@ -32,23 +87,32 @@ def field_list(request):
 
 
 def field_detail(request, slug):
-    field = get_object_or_404(
-        ResearchField,
-        slug=slug,
-    )
+    field = get_object_or_404(ResearchField, slug=slug)
 
-    research_titles = (
+    research_queryset = (
         ResearchTitle.objects
         .filter(
             research_field=field,
             is_published=True,
         )
-        .order_by("-created_at")
+    )
+
+    research_count = research_queryset.count()
+
+    paper_count = ResearchPaper.objects.filter(
+        research_title__in=research_queryset
+    ).count()
+
+    research_titles = (
+        research_queryset
+        .order_by("-created_at")[:8]
     )
 
     return render(request, "research/field_detail.html", {
         "field": field,
         "research_titles": research_titles,
+        "research_count": research_count,
+        "paper_count": paper_count,
     })
 
 

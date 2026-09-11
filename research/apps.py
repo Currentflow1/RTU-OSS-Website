@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class DiglibConfig(AppConfig):
-    name = 'research'
+class ResearchConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "research"

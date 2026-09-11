@@ -1,118 +1,166 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>{{ field.name }} — RTUOSS Digital Library</title>
+    {{ field.name }} — RTUOSS Digital Library
 {% endblock title %}
 
 {% block content %}
 
-<header class="border-b border-amber-900/20 bg-[#f8f3e9]">
-    <div class="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+<section class="border-b border-[#d8c3a8] bg-[#6f4328] text-[#fffaf2]">
+    <div class="mx-auto max-w-7xl px-6 py-12 lg:px-8">
 
-        <nav class="text-sm">
+        <div class="max-w-3xl">
+
             <a
-                href="{% url 'research:home' %}"
-                class="text-[#8a694f] transition hover:text-[#4d2d1c]"
+                href="{% url 'research:field_list' %}"
+                class="text-sm font-medium text-[#e6cfad] transition hover:text-[#fffaf2]"
             >
-                Digital Library
+                ← Research Fields
             </a>
 
-            <span class="mx-2 text-[#b89c7e]">/</span>
-
-            <span class="text-[#4a2d1c]">
-                {{ field.name }}
-            </span>
-        </nav>
-
-        <p class="mt-8 text-sm font-semibold uppercase tracking-[0.2em] text-[#9a6942]">
-            Research Field
-        </p>
-
-        <h1 class="mt-3 text-4xl font-bold tracking-tight text-[#3f2618]">
-            {{ field.name }}
-        </h1>
-
-        <p class="mt-4 max-w-3xl text-base leading-7 text-[#765c48]">
-            {{ field.description }}
-        </p>
-
-    </div>
-</header>
-
-<section class="bg-[#fffaf2]">
-    <div class="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-
-        <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a6942]">
-                Archive
+            <p class="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#e6cfad]">
+                Research Field
             </p>
 
-            <h2 class="mt-2 text-3xl font-bold tracking-tight text-[#3f2618]">
-                Research in {{ field.name }}
-            </h2>
-        </div>
+            <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                {{ field.name }}
+            </h1>
 
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            {% if field.description %}
+                <p class="mt-4 max-w-2xl text-base leading-7 text-[#f3eadc]">
+                    {{ field.description }}
+                </p>
+            {% endif %}
+            <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-[#8a5a36]/50 pt-4 text-sm text-[#e6cfad]">
 
-            {% for research in research_titles %}
+                <p>
+                    <span class="font-semibold text-[#fffaf2]">
+                        {{ research_count }}
+                    </span>
 
-                <a
-                    href="{% url 'research:research_detail' research.slug %}"
-                    class="group rounded-xl border border-[#d8c3a8] bg-[#fffdf8] p-7 shadow-sm transition hover:-translate-y-0.5 hover:border-[#a8784e] hover:shadow-md"
-                >
-
-                    <div class="mb-5 h-1 w-10 rounded-full bg-[#9a6942]"></div>
-
-                    <h3 class="text-xl font-semibold text-[#4a2d1c] group-hover:text-[#70452a]">
-                        {{ research.title }}
-                    </h3>
-
-                    {% if research.authors %}
-                        <p class="mt-2 text-sm font-medium text-[#9a6942]">
-                            {{ research.authors }}
-                        </p>
+                    research
+                    {% if research_count == 1 %}
+                        work
+                    {% else %}
+                        works
                     {% endif %}
+                </p>
 
-                    <p class="mt-4 line-clamp-4 text-sm leading-6 text-[#765c48]">
-                        {{ research.description }}
-                    </p>
+                <p>
+                    <span class="font-semibold text-[#fffaf2]">
+                        {{ paper_count }}
+                    </span>
 
-                    {% if research.publication_date %}
-                        <p class="mt-5 text-xs text-[#8a6a51]">
-                            Published {{ research.publication_date|date:"F Y" }}
-                        </p>
+                    {% if paper_count == 1 %}
+                        paper
+                    {% else %}
+                        papers
                     {% endif %}
+                </p>
 
-                    <div class="mt-6 text-sm font-semibold text-[#8a5a36]">
-                        View research →
-                    </div>
-
-                </a>
-
-            {% empty %}
-
-                <div class="rounded-xl border border-[#d8c3a8] bg-[#fffdf8] p-8">
-                    <p class="text-sm text-[#765c48]">
-                        No published research is currently available in this field.
-                    </p>
-                </div>
-
-            {% endfor %}
+            </div>
 
         </div>
 
     </div>
 </section>
 
-<footer class="border-t border-[#4d2d1c] bg-[#3f2618]">
-    <div class="mx-auto max-w-7xl px-6 py-10 lg:px-8">
-        <p class="text-sm font-semibold text-[#f1dfc5]">
-            RTUOSS Digital Library
-        </p>
-        <p class="mt-1 text-sm text-[#cdb296]">
-            Institutional Research Archive
-        </p>
+<section class="bg-[#fffaf2]">
+    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.15em] text-[#8a5a36]">
+                Archive
+            </p>
+
+            <h2 class="mt-1 text-2xl font-bold text-[#3f2618]">
+                Research in {{ field.name }}
+            </h2>
+
+            <p class="mt-2 max-w-2xl text-sm leading-6 text-[#765c48]">
+                Browse research archived under this academic field.
+            </p>
+        </div>
+
+
+        {% if research_titles %}
+
+            <div class="mt-8 divide-y divide-[#d8c3a8] rounded-xl border border-[#d8c3a8] bg-[#f8f3e9]">
+
+                {% for research in research_titles %}
+
+                    <article class="p-6 transition hover:bg-[#f3eadc]">
+
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+
+                            <div class="min-w-0">
+
+                                {% if research.publication_date %}
+                                    <p class="text-xs font-medium uppercase tracking-wide text-[#9b8068]">
+                                        {{ research.publication_date|date:"F Y" }}
+                                    </p>
+                                {% endif %}
+
+                                <h3 class="mt-1 text-lg font-semibold text-[#3f2618]">
+                                    <a
+                                        href="{% url 'research:research_detail' research.slug %}"
+                                        class="transition hover:text-[#6f4328]"
+                                    >
+                                        {{ research.title }}
+                                    </a>
+                                </h3>
+
+                                <p class="mt-2 line-clamp-3 text-sm leading-6 text-[#765c48]">
+                                    {{ research.description }}
+                                </p>
+
+                                {% if research.authors %}
+                                    <p class="mt-3 text-xs text-[#8a6d55]">
+                                        {{ research.authors }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+
+                            <a
+                                href="{% url 'research:research_detail' research.slug %}"
+                                class="shrink-0 text-sm font-semibold text-[#6f4328] transition hover:text-[#3f2618]"
+                            >
+                                View research →
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+
+            {% if research_count > 8 %}
+                <div class="mt-10 flex justify-center">
+
+                    <a
+                        href="{% url 'research:search' %}?field={{ field.slug|urlencode }}"
+                        class="inline-flex items-center text-sm font-semibold text-[#6f4328] transition hover:text-[#3f2618]"
+                    >
+                        View all {{ research_count }} research works in {{ field.name }}
+                        <span class="ml-2">→</span>
+                    </a>
+
+                </div>
+            {% endif %}
+
+
+        {% else %}
+
+            <div class="mt-8 rounded-xl border border-dashed border-[#d8c3a8] bg-[#f8f3e9] px-6 py-10 text-center">
+
+                <p class="text-sm text-[#765c48]">
+                    No published research is available in this field yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
     </div>
-</footer>
+</section>
 
 {% endblock content %}
