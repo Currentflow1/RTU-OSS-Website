@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>{{ paper.research_title.title }} — Research Paper</title>
+{% endblock title %}
+
+{% block content %}
+
+<header class="border-b border-amber-900/20 bg-[#f8f3e9]">
+    <div class="mx-auto max-w-5xl px-6 py-10 lg:px-8">
+
+        <nav class="text-sm">
+            <a
+                href="{% url 'research:home' %}"
+                class="text-[#8a694f] hover:text-[#4d2d1c]"
+            >
+                Digital Library
+            </a>
+
+            <span class="mx-2 text-[#b89c7e]">/</span>
+
+            <a
+                href="{% url 'research:field_detail' paper.research_title.research_field.slug %}"
+                class="text-[#8a694f] hover:text-[#4d2d1c]"
+            >
+                {{ paper.research_title.research_field.name }}
+            </a>
+
+            <span class="mx-2 text-[#b89c7e]">/</span>
+
+            <a
+                href="{% url 'research:research_detail' paper.research_title.slug %}"
+                class="text-[#8a694f] hover:text-[#4d2d1c]"
+            >
+                {{ paper.research_title.title }}
+            </a>
+        </nav>
+
+        <p class="mt-8 text-sm font-semibold uppercase tracking-[0.2em] text-[#9a6942]">
+            Research Paper
+        </p>
+
+        <h1 class="mt-3 text-3xl font-bold tracking-tight text-[#3f2618] sm:text-4xl">
+            {{ paper.research_title.title }}
+        </h1>
+
+    </div>
+</header>
+
+<section class="bg-[#fffaf2]">
+    <div class="mx-auto max-w-6xl px-6 py-12 lg:px-8">
+
+        <div class="rounded-xl border border-[#d8c3a8] bg-[#fffdf8] p-8 shadow-sm">
+
+            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a6942]">
+                Abstract
+            </p>
+
+            <div class="mt-5 text-base leading-8 text-[#765c48]">
+                {{ paper.abstract|linebreaks }}
+            </div>
+
+        </div>
+
+        <div class="mt-10">
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[#9a6942]">
+                        Document
+                    </p>
+
+                    <h2 class="mt-2 text-2xl font-bold text-[#3f2618]">
+                        Full Research Paper
+                    </h2>
+                </div>
+
+                <a
+                    href="{{ paper.document.url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center rounded-lg bg-[#6f4328] px-5 py-3 text-sm font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c]"
+                >
+                    Open PDF ↗
+                </a>
+
+            </div>
+            
+            <div class="mt-6 overflow-hidden rounded-xl border border-[#d8c3a8] bg-[#f3eadc] shadow-sm">
+                <iframe
+                    src="{{ paper.document.url }}"
+                    class="h-[80vh] w-full"
+                    title="Research paper PDF"
+                ></iframe>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<footer class="border-t border-[#4d2d1c] bg-[#3f2618]">
+    <div class="mx-auto max-w-6xl px-6 py-10 lg:px-8">
+        <p class="text-sm font-semibold text-[#f1dfc5]">
+            RTUOSS Digital Library
+        </p>
+        <p class="mt-1 text-sm text-[#cdb296]">
+            Institutional Research Archive
+        </p>
+    </div>
+</footer>
+
+{% endblock content %}
