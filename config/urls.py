@@ -5,9 +5,10 @@ from django.urls import include, path
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("research/", include("research.urls")),
-    path("", include('org.urls')),
+    path('admin/', admin.site.urls),
+    path('research/', include('research.urls')),
+    path('', include('org.urls')),
+    path('easter/', include('easter.urls'))
 ]
 
 if settings.DEBUG:

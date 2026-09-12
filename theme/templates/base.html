@@ -6,50 +6,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>
         {% block title %}
             RTUOSS Digital Library
         {% endblock title %}
     </title>
+
     <link
         rel="icon"
         type="image/png"
         href="{% static 'research/images/emblem.png' %}"
     >
+
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+
     {% tailwind_css %}
 
     <style>
-    @keyframes page-enter {
-        from {
-            opacity: 0;
-            transform: translateY(8px);
+        @keyframes page-enter {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    main {
-        animation: page-enter 220ms ease-out;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
         main {
-            animation: none;
+            animation: page-enter 220ms ease-out;
         }
-    }
-</style>
+
+        @media (prefers-reduced-motion: reduce) {
+            main {
+                animation: none;
+            }
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-[#fffaf2] text-[#4a2d1c]">
+
     {% include "partials/header.html" %}
+
     <main>
         {% block content %}
         {% endblock content %}
     </main>
+
     {% include "partials/footer.html" %}
+    <script>
+        const easterEgg = document.querySelector("#rtuoss-easter-egg");
+
+        if (easterEgg) {
+            let clicks = 0;
+            let resetTimer;
+
+            easterEgg.addEventListener("click", (event) => {
+                event.preventDefault();
+
+                clicks += 1;
+
+                clearTimeout(resetTimer);
+
+                resetTimer = setTimeout(() => {
+                    clicks = 0;
+                }, 1200);
+
+                if (clicks >= 7) {
+                    window.location.href = "{% url 'easter:game' %}";
+                }
+            });
+        }
+    </script>
+
 </body>
 </html>
