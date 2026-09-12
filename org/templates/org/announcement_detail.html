@@ -8,39 +8,82 @@
 
 <article class="bg-[#fffaf2]">
 
-    <div class="mx-auto max-w-4xl px-6 py-16 lg:px-8">
+    <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
 
         <a
             href="{% url 'org:home' %}"
-            class="text-sm font-medium text-[#8a5a36] hover:text-[#3f2618]"
+            class="inline-flex items-center gap-2 text-sm font-semibold text-[#6f4328] transition hover:text-[#3f2618]"
         >
-            ← Announcements
+            <span aria-hidden="true">←</span>
+            Announcements
         </a>
 
-        <header class="mt-8 border-b border-[#d8c3a8] pb-8">
+        <header class="mt-8 border-b border-[#d8c3a8] pb-8 sm:mt-10 sm:pb-10">
 
-            <p class="text-sm text-[#8a5a36]">
-                {{ announcement.published_at|date:"F j, Y" }}
-            </p>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <span class="inline-flex items-center bg-[#6f4328] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">
+                    RTUOSS Announcement
+                </span>
 
-            <h1 class="mt-3 text-4xl font-semibold tracking-tight text-[#3f2618]">
+                <span class="text-sm text-[#8a5a36]">
+                    {{ announcement.published_at|date:"F j, Y" }}
+                </span>
+
+                <span class="hidden text-[#cdb89f] sm:inline" aria-hidden="true">
+                    •
+                </span>
+
+                <span class="text-sm text-[#9a806b]">
+                    {{ announcement.published_at|date:"g:i A" }}
+                </span>
+            </div>
+
+            <h1 class="mt-5 text-3xl font-semibold leading-tight tracking-tight text-[#3f2618] sm:text-4xl sm:leading-tight lg:text-5xl">
                 {{ announcement.title }}
             </h1>
 
             {% if announcement.summary %}
-                <p class="mt-5 text-lg leading-8 text-[#765c48]">
+                <p class="mt-5 max-w-3xl text-base leading-7 text-[#765c48] sm:mt-6 sm:text-lg sm:leading-8">
                     {{ announcement.summary }}
                 </p>
             {% endif %}
 
         </header>
 
-        <div class="mt-10 max-w-3xl text-base leading-8 text-[#4a2d1c] whitespace-pre-line">
-            {{ announcement.content }}
+        <div class="mt-8 sm:mt-10">
+
+            <div class="max-w-3xl whitespace-pre-line text-[15px] leading-7 text-[#4a2d1c] sm:text-base sm:leading-8">
+                {{ announcement.content }}
+            </div>
+
         </div>
 
+        <footer class="mt-12 border-t border-[#d8c3a8] pt-6 sm:mt-16 sm:pt-8">
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#9a806b]">
+                        RTUOSS
+                    </p>
+
+                    <p class="mt-1 text-sm text-[#765c48]">
+                        Official organization announcement
+                    </p>
+                </div>
+
+                <a
+                    href="{% url 'org:home' %}"
+                    class="inline-flex w-fit items-center gap-2 text-sm font-semibold text-[#6f4328] transition hover:text-[#3f2618]"
+                >
+                    View all announcements
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+        </footer>
+
     </div>
-
 </article>
-
 {% endblock %}

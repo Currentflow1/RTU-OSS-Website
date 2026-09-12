@@ -1,11 +1,13 @@
 {% load static %}
 
-<header class="sticky top-0 z-50 border-b border-[#cdb89f] bg-[#f3eadc]">
+<header class="sticky top-0 z-50 border-b border-amber-900/20 bg-[#f8f3e9]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex min-h-16 items-center justify-between gap-3 lg:min-h-20">
+
+    <div class="flex min-h-16 items-center justify-between gap-4 lg:min-h-20">
+
         <a
             href="{% if request.resolver_match.app_name == 'org' %}{% url 'org:home' %}{% else %}{% url 'research:home' %}{% endif %}"
-            class="group flex min-w-0 items-center gap-2.5 rounded-lg px-2 py-1.5 transition duration-150 sm:gap-3"
+            class="group flex min-w-0 items-center gap-2.5 sm:gap-3"
             aria-label="RTUOSS home"
         >
             <div class="flex h-11 w-11 shrink-0 items-center justify-center sm:h-12 sm:w-12 lg:h-14 lg:w-14">
@@ -13,7 +15,7 @@
                     id="rtuoss-easter-egg"
                     src="{% static 'research/images/emblem.png' %}"
                     alt="RTUOSS emblem"
-                    class="max-h-11 max-w-11 object-contain transition duration-150 ease-out group-hover:scale-105 group-active:scale-95 sm:max-h-12 sm:max-w-12 lg:max-h-14 lg:max-w-14"
+                    class="max-h-11 max-w-11 object-contain transition-transform duration-200 group-hover:scale-[1.03] sm:max-h-12 sm:max-w-12 lg:max-h-14 lg:max-w-14"
                 >
             </div>
 
@@ -44,17 +46,17 @@
             </div>
         </a>
 
-        <nav class="hidden items-center lg:flex">
+        <nav class="hidden items-center gap-1 lg:flex">
             <a
                 href="{% url 'research:home' %}"
-                class="rounded-lg px-3 py-2 text-sm font-semibold text-[#6f4328] transition duration-150 hover:-translate-y-px hover:bg-[#eadcc9] hover:text-[#3f2618] active:translate-y-0"
+                class="rounded-lg px-3 py-2 text-sm font-semibold text-[#6f4328] transition hover:bg-[#f3eadc] hover:text-[#3f2618]"
             >
                 Research
             </a>
 
             <a
                 href="{% url 'org:home' %}"
-                class="rounded-lg px-3 py-2 text-sm font-semibold text-[#6f4328] transition duration-150 hover:-translate-y-px hover:bg-[#eadcc9] hover:text-[#3f2618] active:translate-y-0"
+                class="rounded-lg px-3 py-2 text-sm font-semibold text-[#6f4328] transition hover:bg-[#f3eadc] hover:text-[#3f2618]"
             >
                 Announcements
             </a>
@@ -63,7 +65,7 @@
         <form
             method="get"
             action="{% url 'research:search' %}"
-            class="hidden min-w-0 rounded-xl border border-[#dfcdb7] bg-[#fffaf2]/60 p-1 shadow-sm transition duration-150 focus-within:border-[#cdb89f] focus-within:shadow lg:block lg:w-72 xl:w-80"
+            class="hidden min-w-0 lg:block lg:w-72 xl:w-80"
         >
             <label
                 for="desktop-search"
@@ -79,12 +81,12 @@
                     name="q"
                     value="{{ request.GET.q|default:'' }}"
                     placeholder="Search research..."
-                    class="min-w-0 flex-1 rounded-lg bg-transparent px-3 py-2 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] transition duration-150 focus:bg-[#fffdf8]"
+                    class="min-w-0 flex-1 rounded-l-lg border border-[#cdb89f] border-r-0 bg-[#fffdf8] px-3 py-2 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] focus:border-[#8a5a36] focus:ring-2 focus:ring-[#9a6942]/20"
                 >
 
                 <button
                     type="submit"
-                    class="shrink-0 rounded-lg bg-[#6f4328] px-4 py-2 text-sm font-semibold text-[#fff8ed] transition duration-150 hover:-translate-y-px hover:bg-[#4d2d1c] active:translate-y-0"
+                    class="shrink-0 rounded-r-lg bg-[#6f4328] px-4 py-2 text-sm font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c]"
                 >
                     Search
                 </button>
@@ -96,13 +98,13 @@
             id="mobile-menu-button"
             aria-expanded="false"
             aria-controls="mobile-menu"
-            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cdb89f] bg-[#fffaf2] text-[#6f4328] shadow-sm transition duration-150 hover:-translate-y-px hover:bg-white hover:text-[#3f2618] active:translate-y-0 active:scale-95 lg:hidden"
+            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cdb89f] bg-[#fffdf8] text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc] lg:hidden"
         >
             <span class="sr-only">Open navigation menu</span>
 
             <svg
                 id="mobile-menu-icon"
-                class="h-5 w-5 transition-transform duration-150"
+                class="h-5 w-5"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -116,80 +118,66 @@
                 />
             </svg>
         </button>
+
     </div>
 
     <div
         id="mobile-menu"
-        class="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-150 ease-out lg:hidden"
+        class="hidden border-t border-[#eadcc9] pb-4 pt-4 lg:hidden"
     >
-        <div class="min-h-0 overflow-hidden">
-            <div class="border-t border-[#dfcdb7] bg-[#fffaf2] px-1 pb-4 pt-4">
+        <nav class="space-y-1">
+            <a
+                href="{% url 'research:home' %}"
+                class="block rounded-lg px-3 py-3 text-sm font-semibold text-[#3f2618] transition hover:bg-[#f3eadc]"
+            >
+                Research
+            </a>
 
-                <nav class="space-y-1">
-                    <a
-                        href="{% url 'research:home' %}"
-                        class="mobile-nav-item block rounded-lg px-3 py-3 text-sm font-semibold text-[#3f2618] transition duration-150 hover:bg-[#f3eadc] hover:pl-4"
-                    >
-                        Research
-                    </a>
+            <a
+                href="{% url 'org:home' %}"
+                class="block rounded-lg px-3 py-3 text-sm font-semibold text-[#3f2618] transition hover:bg-[#f3eadc]"
+            >
+                Announcements
+            </a>
 
-                    <a
-                        href="{% url 'org:home' %}"
-                        class="mobile-nav-item block rounded-lg px-3 py-3 text-sm font-semibold text-[#3f2618] transition duration-150 hover:bg-[#f3eadc] hover:pl-4"
-                    >
-                        Announcements
-                    </a>
-                </nav>
+            <div class="my-3 border-t border-[#eadcc9]"></div>
+        </nav>
 
-                <form
-                    method="get"
-                    action="{% url 'research:search' %}"
-                    class="mobile-search mt-4 rounded-xl border border-[#dfcdb7] bg-[#f3eadc] p-1"
+        <form
+            method="get"
+            action="{% url 'research:search' %}"
+            class="mt-4"
+        >
+            <label
+                for="mobile-search"
+                class="sr-only"
+            >
+                Search the research archive
+            </label>
+
+            <div class="flex min-w-0">
+                <input
+                    id="mobile-search"
+                    type="search"
+                    name="q"
+                    value="{{ request.GET.q|default:'' }}"
+                    placeholder="Search research..."
+                    class="min-w-0 flex-1 rounded-l-lg border border-[#cdb89f] border-r-0 bg-[#fffdf8] px-3 py-2.5 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] focus:border-[#8a5a36] focus:ring-2 focus:ring-[#9a6942]/20"
                 >
-                    <label
-                        for="mobile-search"
-                        class="sr-only"
-                    >
-                        Search the research archive
-                    </label>
 
-                    <div class="flex min-w-0">
-                        <input
-                            id="mobile-search"
-                            type="search"
-                            name="q"
-                            value="{{ request.GET.q|default:'' }}"
-                            placeholder="Search research..."
-                            class="min-w-0 flex-1 rounded-lg bg-transparent px-3 py-2.5 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] transition duration-150 focus:bg-[#fffdf8]"
-                        >
-
-                        <button
-                            type="submit"
-                            class="shrink-0 rounded-lg bg-[#6f4328] px-4 py-2.5 text-sm font-semibold text-[#fff8ed] transition duration-150 hover:bg-[#4d2d1c] active:scale-[0.98]"
-                        >
-                            Search
-                        </button>
-                    </div>
-                </form>
-
+                <button
+                    type="submit"
+                    class="shrink-0 rounded-r-lg bg-[#6f4328] px-4 py-2.5 text-sm font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c]"
+                >
+                    Search
+                </button>
             </div>
-        </div>
+        </form>
     </div>
+
 </div>
 
 </header>
-
-<style>
-    @media (prefers-reduced-motion: reduce) {
-        #mobile-menu,
-        #mobile-menu *,
-        #mobile-menu-button,
-        #mobile-menu-icon {
-            animation: none !important;
-            transition: none !important;
-        }
-    }
-</style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -205,16 +193,23 @@
             const isOpen = button.getAttribute("aria-expanded") === "true";
 
             button.setAttribute("aria-expanded", String(!isOpen));
+            menu.classList.toggle("hidden", isOpen);
 
-            if (isOpen) {
-                menu.classList.remove("grid-rows-[1fr]", "opacity-100");
-                menu.classList.add("grid-rows-[0fr]", "opacity-0");
-                icon.classList.remove("rotate-90");
-            } else {
-                menu.classList.remove("grid-rows-[0fr]", "opacity-0");
-                menu.classList.add("grid-rows-[1fr]", "opacity-100");
-                icon.classList.add("rotate-90");
-            }
+            icon.innerHTML = isOpen
+                ? `
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4 6h16M4 12h16M4 18h16"
+                    />
+                `
+                : `
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 6l12 12M6 18L18 6"
+                    />
+                `;
         });
     });
 </script>
