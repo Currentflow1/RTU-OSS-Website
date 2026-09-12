@@ -20,6 +20,24 @@ class ResearchSubmissionForm(forms.ModelForm):
         )
     )
 
+    submitter_email = forms.EmailField(
+        required=False,
+        label="Email Address",
+        help_text="Optional. We may use this to contact you about your submission.",
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "Email address (optional)",
+                "class": (
+                    "w-full rounded-lg border border-[#d8c3a8] "
+                    "bg-white px-4 py-3 text-sm text-[#4a2d1c] "
+                    "placeholder-[#9a806b] outline-none transition "
+                    "focus:border-[#8a5a36] focus:ring-2 "
+                    "focus:ring-[#8a5a36]/20"
+                ),
+            }
+        ),
+    )
+
     document = forms.FileField(
         label="Research Document",
         help_text="Upload the final research document as a PDF.",
@@ -41,14 +59,18 @@ class ResearchSubmissionForm(forms.ModelForm):
 
     class Meta:
         model = ResearchTitle
-
         fields = [
             "research_field",
             "title",
             "description",
             "authors",
+            "keywords",
+            "department",
+            "program",
+            "adviser",
+            "school_year",
+            "submitter_email",
         ]
-
         widgets = {
             "research_field": forms.Select(
                 attrs={
@@ -76,9 +98,7 @@ class ResearchSubmissionForm(forms.ModelForm):
             "description": forms.Textarea(
                 attrs={
                     "rows": 5,
-                    "placeholder": (
-                        "Brief description of the research..."
-                    ),
+                    "placeholder": "Brief description of the research...",
                     "class": (
                         "w-full rounded-lg border border-[#d8c3a8] "
                         "bg-white px-4 py-3 text-sm text-[#4a2d1c] "
@@ -91,6 +111,66 @@ class ResearchSubmissionForm(forms.ModelForm):
             "authors": forms.TextInput(
                 attrs={
                     "placeholder": "Author names",
+                    "class": (
+                        "w-full rounded-lg border border-[#d8c3a8] "
+                        "bg-white px-4 py-3 text-sm text-[#4a2d1c] "
+                        "placeholder-[#9a806b] outline-none transition "
+                        "focus:border-[#8a5a36] focus:ring-2 "
+                        "focus:ring-[#8a5a36]/20"
+                    ),
+                }
+            ),
+            "keywords": forms.TextInput(
+                attrs={
+                    "placeholder": "Example: regression, probability, statistics",
+                    "class": (
+                        "w-full rounded-lg border border-[#d8c3a8] "
+                        "bg-white px-4 py-3 text-sm text-[#4a2d1c] "
+                        "placeholder-[#9a806b] outline-none transition "
+                        "focus:border-[#8a5a36] focus:ring-2 "
+                        "focus:ring-[#8a5a36]/20"
+                    ),
+                }
+            ),
+            "department": forms.TextInput(
+                attrs={
+                    "placeholder": "Department",
+                    "class": (
+                        "w-full rounded-lg border border-[#d8c3a8] "
+                        "bg-white px-4 py-3 text-sm text-[#4a2d1c] "
+                        "placeholder-[#9a806b] outline-none transition "
+                        "focus:border-[#8a5a36] focus:ring-2 "
+                        "focus:ring-[#8a5a36]/20"
+                    ),
+                }
+            ),
+            "program": forms.TextInput(
+                attrs={
+                    "placeholder": "Degree or academic program",
+                    "class": (
+                        "w-full rounded-lg border border-[#d8c3a8] "
+                        "bg-white px-4 py-3 text-sm text-[#4a2d1c] "
+                        "placeholder-[#9a806b] outline-none transition "
+                        "focus:border-[#8a5a36] focus:ring-2 "
+                        "focus:ring-[#8a5a36]/20"
+                    ),
+                }
+            ),
+            "adviser": forms.TextInput(
+                attrs={
+                    "placeholder": "Research adviser",
+                    "class": (
+                        "w-full rounded-lg border border-[#d8c3a8] "
+                        "bg-white px-4 py-3 text-sm text-[#4a2d1c] "
+                        "placeholder-[#9a806b] outline-none transition "
+                        "focus:border-[#8a5a36] focus:ring-2 "
+                        "focus:ring-[#8a5a36]/20"
+                    ),
+                }
+            ),
+            "school_year": forms.TextInput(
+                attrs={
+                    "placeholder": "Example: 2025-2026",
                     "class": (
                         "w-full rounded-lg border border-[#d8c3a8] "
                         "bg-white px-4 py-3 text-sm text-[#4a2d1c] "

@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Digital Library Dashboard · RTUOSS Digital Library
+{% endblock title %}
+
+{% block content %}
+<section class="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+    <div class="mb-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a5a36]">
+            Administration
+        </p>
+
+        <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-[#3f2618]">
+                    Digital Library Dashboard
+                </h1>
+
+                <p class="mt-2 text-sm leading-6 text-[#765c48]">
+                    Manage research submissions and institutional announcements.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-[#d8c3a8] bg-white p-5 shadow-sm">
+            <p class="text-sm font-medium text-[#765c48]">
+                Total Research
+            </p>
+
+            <p class="mt-2 text-3xl font-bold text-[#3f2618]">
+                {{ counts.total }}
+            </p>
+
+            <p class="mt-1 text-xs text-[#9a806b]">
+                All research records
+            </p>
+        </div>
+
+        <div class="rounded-xl border border-[#d8c3a8] bg-white p-5 shadow-sm">
+            <p class="text-sm font-medium text-[#765c48]">
+                Pending Review
+            </p>
+
+            <p class="mt-2 text-3xl font-bold text-[#8a5a36]">
+                {{ counts.pending }}
+            </p>
+
+            <p class="mt-1 text-xs text-[#9a806b]">
+                Awaiting approval
+            </p>
+        </div>
+
+        <div class="rounded-xl border border-[#d8c3a8] bg-white p-5 shadow-sm">
+            <p class="text-sm font-medium text-[#765c48]">
+                Published
+            </p>
+
+            <p class="mt-2 text-3xl font-bold text-[#5d765d]">
+                {{ counts.published }}
+            </p>
+
+            <p class="mt-1 text-xs text-[#9a806b]">
+                Publicly available
+            </p>
+        </div>
+
+        <div class="rounded-xl border border-[#d8c3a8] bg-white p-5 shadow-sm">
+            <p class="text-sm font-medium text-[#765c48]">
+                Rejected
+            </p>
+
+            <p class="mt-2 text-3xl font-bold text-[#8a5a5a]">
+                {{ counts.rejected }}
+            </p>
+
+            <p class="mt-1 text-xs text-[#9a806b]">
+                Not approved
+            </p>
+        </div>
+    </div>
+
+    <section class="mt-8">
+        <div class="rounded-xl border border-[#d8c3a8] bg-white shadow-sm">
+            <div class="flex flex-col gap-3 border-b border-[#eadcc9] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight text-[#3f2618]">
+                        Pending Research
+                    </h2>
+
+                    <p class="mt-1 text-sm text-[#765c48]">
+                        Research submissions awaiting administrative review.
+                    </p>
+                </div>
+
+                <a
+                    href="{% url 'research:admin_submission_list' %}"
+                    class="text-sm font-semibold text-[#6f4328] hover:text-[#3f2618]"
+                >
+                    View all →
+                </a>
+            </div>
+
+            {% if recent_pending %}
+                <div class="divide-y divide-[#eadcc9]">
+                    {% for research in recent_pending %}
+                        <div class="px-6 py-5 transition hover:bg-[#fffaf2]">
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="min-w-0">
+                                    <p class="text-xs font-semibold uppercase tracking-wide text-[#8a5a36]">
+                                        {{ research.research_field.name }}
+                                    </p>
+
+                                    <h3 class="mt-1 truncate text-base font-semibold text-[#3f2618]">
+                                        {{ research.title }}
+                                    </h3>
+
+                                    <p class="mt-1 text-sm text-[#765c48]">
+                                        {{ research.authors|default:"Anonymous author" }}
+                                    </p>
+                                </div>
+
+                                <a
+                                    href="{% url 'research:admin_submission_detail' research.pk %}"
+                                    class="shrink-0 text-sm font-semibold text-[#6f4328] hover:text-[#3f2618]"
+                                >
+                                    Review →
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="px-6 py-10">
+                    <p class="font-semibold text-[#3f2618]">
+                        No pending submissions
+                    </p>
+
+                    <p class="mt-1 text-sm text-[#765c48]">
+                        New research submissions will appear here for review.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="mt-8">
+        <div class="rounded-xl border border-[#d8c3a8] bg-white shadow-sm">
+            <div class="flex flex-col gap-3 border-b border-[#eadcc9] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight text-[#3f2618]">
+                        Recently Published Research
+                    </h2>
+
+                    <p class="mt-1 text-sm text-[#765c48]">
+                        The latest research available in the public archive.
+                    </p>
+                </div>
+
+                <a
+                    href="{% url 'research:home' %}"
+                    class="text-sm font-semibold text-[#6f4328] hover:text-[#3f2618]"
+                >
+                    View archive →
+                </a>
+            </div>
+
+            {% if recent_published %}
+                <div class="divide-y divide-[#eadcc9]">
+                    {% for research in recent_published %}
+                        <div class="px-6 py-5 transition hover:bg-[#fffaf2]">
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="min-w-0">
+                                    <p class="text-xs font-semibold uppercase tracking-wide text-[#8a5a36]">
+                                        {{ research.research_field.name }}
+                                    </p>
+
+                                    <h3 class="mt-1 truncate text-base font-semibold text-[#3f2618]">
+                                        {{ research.title }}
+                                    </h3>
+
+                                    <p class="mt-1 text-sm text-[#765c48]">
+                                        {{ research.authors|default:"Anonymous author" }}
+                                    </p>
+                                </div>
+
+                                <a
+                                    href="{% url 'research:research_detail' research.slug %}"
+                                    class="shrink-0 text-sm font-semibold text-[#6f4328] hover:text-[#3f2618]"
+                                >
+                                    View →
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="px-6 py-10">
+                    <p class="font-semibold text-[#3f2618]">
+                        No published research yet
+                    </p>
+
+                    <p class="mt-1 text-sm text-[#765c48]">
+                        Published research will appear here.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="mt-8">
+        <div class="rounded-xl border border-[#d8c3a8] bg-white shadow-sm">
+            <div class="flex flex-col gap-4 border-b border-[#eadcc9] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-xl font-bold tracking-tight text-[#3f2618]">
+                            Announcements
+                        </h2>
+
+                        {% if recent_announcements %}
+                            <span class="rounded-full bg-[#f3eadc] px-2.5 py-1 text-xs font-semibold text-[#6f4328]">
+                                {{ recent_announcements|length }}
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <p class="mt-1 text-sm text-[#765c48]">
+                        Manage important updates for the digital library.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a
+                        href="{% url 'research:admin_announcement_list' %}"
+                        class="text-sm font-semibold text-[#6f4328] hover:text-[#3f2618]"
+                    >
+                        View all
+                    </a>
+
+                    <a
+                        href="{% url 'research:admin_announcement_create' %}"
+                        class="inline-flex items-center gap-2 rounded-lg bg-[#6f4328] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#4d2d1c]"
+                    >
+                        <span class="text-base leading-none">+</span>
+                        New Announcement
+                    </a>
+                </div>
+            </div>
+
+            {% if recent_announcements %}
+                <div class="divide-y divide-[#eadcc9]">
+                    {% for announcement in recent_announcements %}
+                        <div class="group px-6 py-5 transition hover:bg-[#fffaf2]">
+                            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                                <div class="min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        {% if announcement.is_published %}
+                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#edf5ed] px-2.5 py-1 text-xs font-semibold text-[#426442]">
+                                                <span class="h-1.5 w-1.5 rounded-full bg-[#5d865d]"></span>
+                                                Published
+                                            </span>
+                                        {% else %}
+                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#f3eadc] px-2.5 py-1 text-xs font-semibold text-[#765c48]">
+                                                <span class="h-1.5 w-1.5 rounded-full bg-[#9a806b]"></span>
+                                                Draft
+                                            </span>
+                                        {% endif %}
+
+                                        <span class="text-xs text-[#9a806b]">
+                                            {{ announcement.published_at|date:"F j, Y · g:i A" }}
+                                        </span>
+                                    </div>
+
+                                    <h3 class="mt-2 text-base font-semibold text-[#3f2618]">
+                                        {{ announcement.title }}
+                                    </h3>
+
+                                    <p class="mt-1 line-clamp-2 max-w-3xl text-sm leading-6 text-[#765c48]">
+                                        {{ announcement.summary }}
+                                    </p>
+                                </div>
+
+                                <div class="flex shrink-0 items-center gap-2">
+                                    <a
+                                        href="{% url 'org:announcement_detail' announcement.slug %}"
+                                        class="rounded-lg border border-[#d8c3a8] bg-white px-3.5 py-2 text-sm font-semibold text-[#6f4328] transition hover:bg-[#f3eadc]"
+                                    >
+                                        View
+                                    </a>
+
+                                    <a
+                                        href="{% url 'research:admin_announcement_edit' announcement.pk %}"
+                                        class="rounded-lg bg-[#f3eadc] px-3.5 py-2 text-sm font-semibold text-[#6f4328] transition hover:bg-[#eadcc9]"
+                                    >
+                                        Edit
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="px-6 py-10">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p class="font-semibold text-[#3f2618]">
+                                No announcements yet
+                            </p>
+
+                            <p class="mt-1 text-sm text-[#765c48]">
+                                Publish an update for students, researchers, and visitors.
+                            </p>
+                        </div>
+
+                        <a
+                            href="{% url 'research:admin_announcement_create' %}"
+                            class="inline-flex shrink-0 items-center rounded-lg border border-[#d8c3a8] bg-[#fffaf2] px-4 py-2.5 text-sm font-semibold text-[#6f4328] transition hover:bg-[#f3eadc]"
+                        >
+                            Create your first announcement
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</section>
+{% endblock content %}

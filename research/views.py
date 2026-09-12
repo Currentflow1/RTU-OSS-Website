@@ -3,6 +3,10 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Prefetch, Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+from django.utils import timezone
+
+from org.models import Announcement
 
 from .forms import ResearchSubmissionForm
 from .models import ResearchField, ResearchPaper, ResearchTitle
@@ -181,7 +185,10 @@ def research_submit(request):
                 research.slug = generate_unique_research_slug(
                     research.title
                 )
-                research.submitted_by = request.user
+
+                if request.user.is_authenticated:
+                    research.submitted_by = request.user
+
                 research.publication_status = (
                     ResearchTitle.PublicationStatus.PENDING
                 )
@@ -194,10 +201,7 @@ def research_submit(request):
                     document=form.cleaned_data["document"],
                 )
 
-            return redirect(
-                "research:submission_success"
-            )
-
+            return redirect("research:submission_success")
     else:
         form = ResearchSubmissionForm()
 
@@ -220,9 +224,7 @@ def admin_submission_list(request):
     submissions = (
         ResearchTitle.objects
         .filter(
-            publication_status=(
-                ResearchTitle.PublicationStatus.PENDING
-            )
+            publication_status=ResearchTitle.PublicationStatus.PENDING
         )
         .select_related(
             "research_field",
@@ -231,10 +233,9 @@ def admin_submission_list(request):
         .order_by("-created_at")
     )
 
-    return render(request, "research/admin/submission_list.html", {
+    return render(request, "research/admin_submission_list.html", {
         "submissions": submissions,
     })
-
 
 @login_required
 def admin_submission_detail(request, pk):
@@ -249,43 +250,35 @@ def admin_submission_detail(request, pk):
         pk=pk,
     )
 
-    paper = get_object_or_404(
-        ResearchPaper,
-        research_title=submission,
-    )
+    paper = submission.papers.first()
 
-    return render(request, "research/admin/submission_detail.html", {
+    return render(request, "research/admin_submission_detail.html", {
         "submission": submission,
         "paper": paper,
     })
 
 
 @login_required
+@require_POST
 def admin_submission_approve(request, pk):
     if not is_admin(request.user):
         return redirect("research:home")
 
-    if request.method != "POST":
-        return redirect(
-            "research:admin_submission_detail",
-            pk=pk,
-        )
-
     submission = get_object_or_404(
         ResearchTitle,
         pk=pk,
-        publication_status=(
-            ResearchTitle.PublicationStatus.PENDING
-        ),
+        publication_status=ResearchTitle.PublicationStatus.PENDING,
     )
 
     submission.publication_status = (
         ResearchTitle.PublicationStatus.PUBLISHED
     )
+    submission.publication_date = timezone.now().date()
 
     submission.save(
         update_fields=[
             "publication_status",
+            "publication_date",
             "updated_at",
         ]
     )
@@ -294,22 +287,15 @@ def admin_submission_approve(request, pk):
 
 
 @login_required
+@require_POST
 def admin_submission_reject(request, pk):
     if not is_admin(request.user):
         return redirect("research:home")
 
-    if request.method != "POST":
-        return redirect(
-            "research:admin_submission_detail",
-            pk=pk,
-        )
-
     submission = get_object_or_404(
         ResearchTitle,
         pk=pk,
-        publication_status=(
-            ResearchTitle.PublicationStatus.PENDING
-        ),
+        publication_status=ResearchTitle.PublicationStatus.PENDING,
     )
 
     submission.publication_status = (
@@ -324,3 +310,61 @@ def admin_submission_reject(request, pk):
     )
 
     return redirect("research:admin_submission_list")
+
+
+@login_required
+def admin_dashboard(request):
+    if not is_admin(request.user):
+        return redirect("research:home")
+
+    counts = ResearchTitle.objects.aggregate(
+        total=Count("id"),
+        pending=Count(
+            "id",
+            filter=Q(
+                publication_status=ResearchTitle.PublicationStatus.PENDING
+            ),
+        ),
+        published=Count(
+            "id",
+            filter=Q(
+                publication_status=ResearchTitle.PublicationStatus.PUBLISHED
+            ),
+        ),
+        rejected=Count(
+            "id",
+            filter=Q(
+                publication_status=ResearchTitle.PublicationStatus.REJECTED
+            ),
+        ),
+    )
+
+    recent_pending = (
+        ResearchTitle.objects
+        .filter(
+            publication_status=ResearchTitle.PublicationStatus.PENDING
+        )
+        .select_related("research_field")
+        .order_by("-created_at")[:5]
+    )
+
+    recent_published = (
+        ResearchTitle.objects
+        .filter(
+            publication_status=ResearchTitle.PublicationStatus.PUBLISHED
+        )
+        .select_related("research_field")
+        .order_by("-publication_date", "-created_at")[:5]
+    )
+
+    recent_announcements = (
+        Announcement.objects
+        .order_by("-published_at", "-created_at")[:5]
+    )
+
+    return render(request, "research/admin_dashboard.html", {
+        "counts": counts,
+        "recent_pending": recent_pending,
+        "recent_published": recent_published,
+        "recent_announcements": recent_announcements,
+    })

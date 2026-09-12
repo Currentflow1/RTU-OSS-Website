@@ -5,31 +5,25 @@
 {% endblock title %}
 
 {% block content %}
-
 <section class="mx-auto max-w-4xl px-6 py-12 lg:px-8">
-
     <div class="mb-8">
         <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a5a36]">
             Research Submission
         </p>
-
         <h1 class="mt-2 text-3xl font-bold tracking-tight text-[#3f2618]">
             Submit Research
         </h1>
-
         <p class="mt-3 max-w-2xl text-sm leading-6 text-[#765c48]">
             Submit your research for review and possible publication in the
             RTUOSS Digital Library.
         </p>
     </div>
 
-    <div class="rounded-xl border border-[#d8c3a8] bg-white shadow-sm">
-
+    <div class="overflow-hidden rounded-xl border border-[#d8c3a8] bg-white shadow-sm">
         <div class="border-b border-[#eadcc9] bg-[#fffaf2] p-6">
             <h2 class="font-semibold text-[#3f2618]">
                 Before you submit
             </h2>
-
             <p class="mt-2 text-sm leading-6 text-[#765c48]">
                 Your submission will be reviewed by an administrator before it
                 becomes publicly available in the digital library.
@@ -41,7 +35,6 @@
             enctype="multipart/form-data"
             class="space-y-8 p-6"
         >
-
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -55,25 +48,29 @@
             {% endif %}
 
             <div>
+                <h2 class="text-lg font-semibold text-[#3f2618]">
+                    Research Information
+                </h2>
+                <p class="mt-1 text-sm text-[#765c48]">
+                    Provide the basic information used to identify and organize your research.
+                </p>
+            </div>
+
+            <div>
                 <label
                     for="{{ form.research_field.id_for_label }}"
                     class="block text-sm font-semibold text-[#3f2618]"
                 >
                     Research Field
                 </label>
-
                 <p class="mt-1 text-xs text-[#8a6d56]">
                     Select the field that best represents your research.
                 </p>
-
                 <div class="mt-2">
                     {{ form.research_field }}
                 </div>
-
                 {% for error in form.research_field.errors %}
-                    <p class="mt-2 text-sm text-red-700">
-                        {{ error }}
-                    </p>
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
                 {% endfor %}
             </div>
 
@@ -84,15 +81,11 @@
                 >
                     Research Title
                 </label>
-
                 <div class="mt-2">
                     {{ form.title }}
                 </div>
-
                 {% for error in form.title.errors %}
-                    <p class="mt-2 text-sm text-red-700">
-                        {{ error }}
-                    </p>
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
                 {% endfor %}
             </div>
 
@@ -103,20 +96,97 @@
                 >
                     Authors
                 </label>
-
                 <p class="mt-1 text-xs text-[#8a6d56]">
-                    List the authors of the research.
+                    List all authors of the research.
                 </p>
-
                 <div class="mt-2">
                     {{ form.authors }}
                 </div>
-
                 {% for error in form.authors.errors %}
-                    <p class="mt-2 text-sm text-red-700">
-                        {{ error }}
-                    </p>
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
                 {% endfor %}
+            </div>
+
+            <div>
+                <label
+                    for="{{ form.keywords.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Keywords
+                </label>
+                <p class="mt-1 text-xs text-[#8a6d56]">
+                    Add important terms that describe the research.
+                </p>
+                <div class="mt-2">
+                    {{ form.keywords }}
+                </div>
+                {% for error in form.keywords.errors %}
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2">
+                <div>
+                    <label
+                        for="{{ form.department.id_for_label }}"
+                        class="block text-sm font-semibold text-[#3f2618]"
+                    >
+                        Department
+                    </label>
+                    <div class="mt-2">
+                        {{ form.department }}
+                    </div>
+                    {% for error in form.department.errors %}
+                        <p class="mt-2 text-sm text-red-700">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <label
+                        for="{{ form.program.id_for_label }}"
+                        class="block text-sm font-semibold text-[#3f2618]"
+                    >
+                        Academic Program
+                    </label>
+                    <div class="mt-2">
+                        {{ form.program }}
+                    </div>
+                    {% for error in form.program.errors %}
+                        <p class="mt-2 text-sm text-red-700">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2">
+                <div>
+                    <label
+                        for="{{ form.adviser.id_for_label }}"
+                        class="block text-sm font-semibold text-[#3f2618]"
+                    >
+                        Research Adviser
+                    </label>
+                    <div class="mt-2">
+                        {{ form.adviser }}
+                    </div>
+                    {% for error in form.adviser.errors %}
+                        <p class="mt-2 text-sm text-red-700">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <label
+                        for="{{ form.school_year.id_for_label }}"
+                        class="block text-sm font-semibold text-[#3f2618]"
+                    >
+                        School Year
+                    </label>
+                    <div class="mt-2">
+                        {{ form.school_year }}
+                    </div>
+                    {% for error in form.school_year.errors %}
+                        <p class="mt-2 text-sm text-red-700">{{ error }}</p>
+                    {% endfor %}
+                </div>
             </div>
 
             <div>
@@ -126,16 +196,24 @@
                 >
                     Description
                 </label>
-
+                <p class="mt-1 text-xs text-[#8a6d56]">
+                    Provide a brief description of the research.
+                </p>
                 <div class="mt-2">
                     {{ form.description }}
                 </div>
-
                 {% for error in form.description.errors %}
-                    <p class="mt-2 text-sm text-red-700">
-                        {{ error }}
-                    </p>
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
                 {% endfor %}
+            </div>
+
+            <div class="border-t border-[#eadcc9] pt-8">
+                <h2 class="text-lg font-semibold text-[#3f2618]">
+                    Research Document
+                </h2>
+                <p class="mt-1 text-sm text-[#765c48]">
+                    Provide the abstract and upload the final research document.
+                </p>
             </div>
 
             <div>
@@ -145,15 +223,11 @@
                 >
                     Abstract
                 </label>
-
                 <div class="mt-2">
                     {{ form.abstract }}
                 </div>
-
                 {% for error in form.abstract.errors %}
-                    <p class="mt-2 text-sm text-red-700">
-                        {{ error }}
-                    </p>
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
                 {% endfor %}
             </div>
 
@@ -164,24 +238,48 @@
                 >
                     Research Document
                 </label>
-
                 <p class="mt-1 text-xs text-[#8a6d56]">
                     Upload the final research document as a PDF.
                 </p>
-
                 <div class="mt-2">
                     {{ form.document }}
                 </div>
-
                 {% for error in form.document.errors %}
-                    <p class="mt-2 text-sm text-red-700">
-                        {{ error }}
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="border-t border-[#eadcc9] pt-8">
+                <h2 class="text-lg font-semibold text-[#3f2618]">
+                    Contact Information
+                </h2>
+                <p class="mt-1 text-sm text-[#765c48]">
+                    Providing an email address is optional and allows administrators
+                    to contact you about your submission.
+                </p>
+            </div>
+
+            <div>
+                <label
+                    for="{{ form.submitter_email.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Email Address
+                </label>
+                <div class="mt-2">
+                    {{ form.submitter_email }}
+                </div>
+                {% if form.submitter_email.help_text %}
+                    <p class="mt-1 text-xs text-[#8a6d56]">
+                        {{ form.submitter_email.help_text }}
                     </p>
+                {% endif %}
+                {% for error in form.submitter_email.errors %}
+                    <p class="mt-2 text-sm text-red-700">{{ error }}</p>
                 {% endfor %}
             </div>
 
             <div class="flex flex-col gap-3 border-t border-[#eadcc9] pt-6 sm:flex-row sm:justify-end">
-
                 <a
                     href="{% url 'research:home' %}"
                     class="inline-flex items-center justify-center rounded-lg border border-[#cdb89f] bg-white px-5 py-2.5 text-sm font-semibold text-[#6f4328] transition hover:bg-[#fffaf2]"
@@ -195,13 +293,8 @@
                 >
                     Submit Research
                 </button>
-
             </div>
-
         </form>
-
     </div>
-
 </section>
-
 {% endblock content %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }} · RTUOSS Digital Library
+{% endblock title %}
+
+{% block content %}
+<section class="mx-auto max-w-4xl px-6 py-12 lg:px-8">
+    <div class="mb-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a5a36]">
+            Administration
+        </p>
+
+        <h1 class="mt-2 text-3xl font-bold tracking-tight text-[#3f2618]">
+            {{ page_title }}
+        </h1>
+
+        <p class="mt-3 text-sm leading-6 text-[#765c48]">
+            Create an announcement for the RTUOSS Digital Library.
+        </p>
+    </div>
+
+    <form
+        method="post"
+        class="rounded-xl border border-[#d8c3a8] bg-white shadow-sm"
+    >
+        {% csrf_token %}
+
+        <div class="space-y-6 p-6">
+            {% for field in form %}
+                <div>
+                    <label
+                        for="{{ field.id_for_label }}"
+                        class="block text-sm font-semibold text-[#3f2618]"
+                    >
+                        {{ field.label }}
+                    </label>
+
+                    <div class="mt-2">
+                        {{ field }}
+                    </div>
+
+                    {% if field.help_text %}
+                        <p class="mt-1.5 text-xs text-[#8a6d56]">
+                            {{ field.help_text }}
+                        </p>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <p class="mt-1.5 text-xs font-medium text-red-700">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+                    {% for error in form.non_field_errors %}
+                        <p class="text-sm text-red-700">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="flex flex-col-reverse gap-3 border-t border-[#eadcc9] bg-[#fffaf2] px-6 py-5 sm:flex-row sm:justify-end">
+            <a
+                href="{% url 'research:admin_announcement_list' %}"
+                class="inline-flex items-center justify-center rounded-lg border border-[#d8c3a8] bg-white px-5 py-2.5 text-sm font-semibold text-[#6f4328] hover:bg-[#f3eadc]"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-[#6f4328] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#4d2d1c]"
+            >
+                Save Announcement
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock content %}
