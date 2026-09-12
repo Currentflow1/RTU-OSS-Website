@@ -16,11 +16,9 @@ def game(request):
       choice = request.POST.get("choice")
 
       if choice not in CHOICES:
-          return render(
-              request,
-              "easter/game.html",
-              {"error": "Please select a probability."},
-          )
+          return render(request, "easter/game.html", {
+            "error": "Please select a probability."
+          })
 
       sequence = generate_sequence()
       next_flip = random.choice(["H", "T"])
