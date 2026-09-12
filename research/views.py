@@ -3,7 +3,6 @@ from django.core.paginator import Paginator
 
 from django.db.models import Prefetch
 from django.db.models import Count, Q
-from django.db import models
 
 from .models import ResearchField, ResearchTitle, ResearchPaper
 from .services import search_research
@@ -15,7 +14,11 @@ def home(request):
         .annotate(
             research_count=Count(
                 "research_titles",
-                filter=models.Q(research_titles__is_published=True),
+                filter=Q(
+                    research_titles__publication_status=(
+                        ResearchTitle.PublicationStatus.PUBLISHED
+                    )
+                ),
             )
         )
         .order_by("name")[:6]
@@ -23,7 +26,9 @@ def home(request):
 
     recent_research = (
         ResearchTitle.objects
-        .filter(is_published=True)
+        .filter(
+            publication_status=ResearchTitle.PublicationStatus.PUBLISHED
+        )
         .select_related("research_field")
         .order_by("-created_at")[:6]
     )
@@ -32,8 +37,6 @@ def home(request):
         "fields": fields,
         "recent_research": recent_research,
     })
-
-
 
 
 def search(request):
@@ -75,7 +78,11 @@ def field_list(request):
         .annotate(
             research_count=Count(
                 "research_titles",
-                filter=Q(research_titles__is_published=True),
+                filter=Q(
+                    research_titles__publication_status=(
+                        ResearchTitle.PublicationStatus.PUBLISHED
+                    )
+                ),
             )
         )
         .order_by("name")
@@ -93,7 +100,7 @@ def field_detail(request, slug):
         ResearchTitle.objects
         .filter(
             research_field=field,
-            is_published=True,
+            publication_status=ResearchTitle.PublicationStatus.PUBLISHED,
         )
     )
 
@@ -120,7 +127,7 @@ def research_detail(request, slug):
     research = get_object_or_404(
         ResearchTitle.objects.select_related("research_field"),
         slug=slug,
-        is_published=True,
+        publication_status=ResearchTitle.PublicationStatus.PUBLISHED,
     )
 
     papers = research.papers.all()
@@ -138,7 +145,9 @@ def paper_detail(request, pk):
             "research_title__research_field",
         ),
         pk=pk,
-        research_title__is_published=True,
+        research_title__publication_status=(
+            ResearchTitle.PublicationStatus.PUBLISHED
+        ),
     )
 
     return render(request, "research/paper_detail.html", {

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ announcement.title }} — RTUOSS
+{% endblock %}
+
+{% block content %}
+
+<article class="bg-[#fffaf2]">
+
+    <div class="mx-auto max-w-4xl px-6 py-16 lg:px-8">
+
+        <a
+            href="{% url 'org:home' %}"
+            class="text-sm font-medium text-[#8a5a36] hover:text-[#3f2618]"
+        >
+            ← Announcements
+        </a>
+
+        <header class="mt-8 border-b border-[#d8c3a8] pb-8">
+
+            <p class="text-sm text-[#8a5a36]">
+                {{ announcement.published_at|date:"F j, Y" }}
+            </p>
+
+            <h1 class="mt-3 text-4xl font-semibold tracking-tight text-[#3f2618]">
+                {{ announcement.title }}
+            </h1>
+
+            {% if announcement.summary %}
+                <p class="mt-5 text-lg leading-8 text-[#765c48]">
+                    {{ announcement.summary }}
+                </p>
+            {% endif %}
+
+        </header>
+
+        <div class="mt-10 max-w-3xl text-base leading-8 text-[#4a2d1c] whitespace-pre-line">
+            {{ announcement.content }}
+        </div>
+
+    </div>
+
+</article>
+
+{% endblock %}

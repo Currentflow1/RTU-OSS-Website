@@ -2,67 +2,95 @@
 
 <header class="sticky top-0 z-50 border-b border-amber-900/20 bg-[#f8f3e9]">
     <div class="mx-auto max-w-7xl px-6 py-4 lg:px-8">
-    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
-        <a
-            href="{% url 'research:home' %}"
-            class="flex shrink-0 items-center gap-4"
-        >
-            <div class="flex h-16 w-16 shrink-0 items-center justify-center">
-                <img
-                    src="{% static 'research/images/emblem.png' %}"
-                    alt="RTUOSS emblem"
-                    class="max-h-16 max-w-16 object-contain"
+            <a
+                id="section-switcher"
+                href="{% if request.resolver_match.app_name == 'org' %}{% url 'research:home' %}{% else %}{% url 'org:home' %}{% endif %}"
+                class="group flex shrink-0 items-center gap-4"
+                aria-label="Switch section"
+            >
+                <div class="flex h-16 w-16 shrink-0 items-center justify-center">
+                    <img
+                        src="{% static 'research/images/emblem.png' %}"
+                        alt="RTUOSS emblem"
+                        class="max-h-16 max-w-16 object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+                    >
+                </div>
+
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#7a4e2d]">
+                        RTUOSS
+                    </p>
+
+                    <h1
+                        id="section-title"
+                        class="text-xl font-bold tracking-tight text-[#3f2618]"
+                    >
+                        {% if request.resolver_match.app_name == "org" %}
+                            Announcements
+                        {% else %}
+                            Digital Library
+                        {% endif %}
+                    </h1>
+
+                    <p
+                        id="section-description"
+                        class="text-xs text-[#765c48]"
+                    >
+                        {% if request.resolver_match.app_name == "org" %}
+                            Organization Updates
+                        {% else %}
+                            Institutional Research Archive
+                        {% endif %}
+                    </p>
+                </div>
+            </a>
+
+
+            <div class="flex w-full flex-col gap-3 lg:w-auto lg:flex-row lg:items-center">
+                <a
+                    href="{% url 'research:home' %}"
+                    class="order-first whitespace-nowrap rounded-lg border border-[#cdb89f] bg-[#fffdf8] px-4 py-2.5 text-sm font-semibold text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc] lg:order-none"
                 >
+                    Home
+                </a>
+
+                <form
+                    method="get"
+                    action="{% url 'research:search' %}"
+                    class="w-full lg:w-[32rem]"
+                >
+                    <label
+                        for="header-search"
+                        class="sr-only"
+                    >
+                        Search the research archive
+                    </label>
+
+                    <div class="flex">
+
+                        <input
+                            id="header-search"
+                            type="search"
+                            name="q"
+                            value="{{ request.GET.q|default:'' }}"
+                            placeholder="Search the research archive..."
+                            class="min-w-0 flex-1 rounded-l-lg border border-[#cdb89f] border-r-0 bg-[#fffdf8] px-4 py-2.5 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] focus:border-[#8a5a36] focus:ring-2 focus:ring-[#9a6942]/20"
+                        >
+
+                        <button
+                            type="submit"
+                            class="rounded-r-lg bg-[#6f4328] px-5 py-2.5 text-sm font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c]"
+                        >
+                            Search
+                        </button>
+
+                    </div>
+                </form>
+
             </div>
 
-            <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#7a4e2d]">
-                    RTUOSS
-                </p>
-
-                <h1 class="text-xl font-bold tracking-tight text-[#3f2618]">
-                    Digital Library
-                </h1>
-
-                <p class="text-xs text-[#765c48]">
-                    Institutional Research Archive
-                </p>
-            </div>
-        </a>
-
-        <form
-            method="get"
-            action="{% url 'research:search' %}"
-            class="w-full lg:max-w-xl"
-        >
-            <label for="header-search" class="sr-only">
-                Search the research archive
-            </label>
-
-
-        <div class="flex">
-            <input
-                id="header-search"
-                type="search"
-                name="q"
-                value="{{ request.GET.q|default:'' }}"
-                placeholder="Search the research archive..."
-                class="min-w-0 flex-1 rounded-l-lg border border-[#cdb89f] border-r-0 bg-[#fffdf8] px-4 py-2.5 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] focus:border-[#8a5a36] focus:ring-2 focus:ring-[#9a6942]/20"
-            >
-
-            <button
-                type="submit"
-                class="rounded-r-lg bg-[#6f4328] px-5 py-2.5 text-sm font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c]"
-            >
-                Search
-            </button>
         </div>
-
-
-        </form>
-
     </div>
-</div>
-
 </header>

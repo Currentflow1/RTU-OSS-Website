@@ -18,6 +18,30 @@
     >
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     {% tailwind_css %}
+
+    <style>
+    @keyframes page-enter {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    main {
+        animation: page-enter 220ms ease-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        main {
+            animation: none;
+        }
+    }
+</style>
 </head>
 
 <body class="min-h-screen bg-[#fffaf2] text-[#4a2d1c]">

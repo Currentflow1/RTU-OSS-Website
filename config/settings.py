@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'theme',
 
     'research',
+    'org',
 ]
 
 TAILWIND_APP_NAME = 'theme'

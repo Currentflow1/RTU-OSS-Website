@@ -1,11 +1,14 @@
 from django.db.models import Q
+
 from .models import ResearchTitle
 
 
 def search_research(query="", field=None):
     queryset = (
         ResearchTitle.objects
-        .filter(is_published=True)
+        .filter(
+            publication_status=ResearchTitle.PublicationStatus.PUBLISHED
+        )
         .select_related("research_field")
     )
 
@@ -21,6 +24,8 @@ def search_research(query="", field=None):
         ).distinct()
 
     if field:
-        queryset = queryset.filter(research_field__slug=field)
+        queryset = queryset.filter(
+            research_field__slug=field
+        )
 
     return queryset.order_by("-created_at")

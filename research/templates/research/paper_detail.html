@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 {{ paper.research_title.title }} — RTUOSS Digital Library
@@ -45,10 +46,10 @@
         </p>
     </div>
 
-    <div class="mt-8 overflow-hidden rounded-xl border border-[#d8c3a8] bg-[#f3eadc] shadow-sm">
+    <div class="mt-6 overflow-hidden rounded-xl border border-[#d8c3a8] bg-[#f3eadc] shadow-sm">
         <iframe
-            src="{{ paper.document.url }}"
-            class="h-[80vh] w-full"
+            src="{% static 'research/pdfjs/web/viewer.html' %}?file={{ paper.document.url|urlencode }}"
+            class="h-[80vh] w-full border-0"
             title="Research paper PDF"
         ></iframe>
     </div>
