@@ -800,6 +800,9 @@
   .bg-\[\#fffaf2\] {
     background-color: #fffaf2;
   }
+  .bg-\[\#fffaf2\]\/60 {
+    background-color: color-mix(in oklab, #fffaf2 60%, transparent);
+  }
   .bg-\[\#fffdf8\] {
     background-color: #fffdf8;
   }
@@ -1276,6 +1279,14 @@
       scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
+  .group-active\:scale-105 {
+    &:is(:where(.group):active *) {
+      --tw-scale-x: 105%;
+      --tw-scale-y: 105%;
+      --tw-scale-z: 105%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
   .file\:mr-4 {
     &::file-selector-button {
       margin-right: calc(var(--spacing) * 4);
@@ -1355,6 +1366,17 @@
   .last\:pb-0 {
     &:last-child {
       padding-bottom: calc(var(--spacing) * 0);
+    }
+  }
+  .focus-within\:border-\[\#cdb89f\] {
+    &:focus-within {
+      border-color: #cdb89f;
+    }
+  }
+  .focus-within\:shadow {
+    &:focus-within {
+      --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
   .hover\:-translate-y-0\.5 {
