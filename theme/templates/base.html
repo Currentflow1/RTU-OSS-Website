@@ -4,7 +4,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>
@@ -24,6 +27,49 @@
     {% tailwind_css %}
 
     <style>
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            min-width: 320px;
+            overflow-x: hidden;
+        }
+
+        main {
+            min-width: 0;
+            animation: page-enter 220ms ease-out;
+        }
+
+        img,
+        svg,
+        video,
+        canvas {
+            max-width: 100%;
+        }
+
+        img {
+            height: auto;
+        }
+
+        pre,
+        code {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        a,
+        span {
+            overflow-wrap: break-word;
+        }
+
         @keyframes page-enter {
             from {
                 opacity: 0;
@@ -36,11 +82,22 @@
             }
         }
 
-        main {
-            animation: page-enter 220ms ease-out;
+        @media (max-width: 640px) {
+            main {
+                font-size: 0.95rem;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
             main {
                 animation: none;
             }
@@ -58,6 +115,7 @@
     </main>
 
     {% include "partials/footer.html" %}
+
     <script>
         const easterEgg = document.querySelector("#rtuoss-easter-egg");
 
