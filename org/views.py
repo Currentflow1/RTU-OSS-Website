@@ -149,3 +149,24 @@ def admin_announcement_delete(request, pk):
     announcement.delete()
 
     return redirect("research:admin_announcement_list")
+
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+
+
+def home(request):
+    announcements = Announcement.objects.filter(
+        is_published=True,
+    ).order_by(
+        "-published_at",
+        "-created_at",
+    )
+
+    paginator = Paginator(announcements, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "org/home.html", {
+        "announcements": page_obj,
+        "page_obj": page_obj,
+    })
