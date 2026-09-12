@@ -1,180 +1,208 @@
 {% load static %}
 
 <header class="sticky top-0 z-50 border-b border-amber-900/20 bg-[#f8f3e9]">
-    <div class="mx-auto max-w-7xl px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8 lg:py-4">
-        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex min-h-16 items-center justify-between gap-4 lg:min-h-20">
 
-            <!-- Brand + Sections -->
-            <div class="flex min-w-0 items-center justify-between gap-3">
-                <a
-                    href="{% if request.resolver_match.app_name == 'org' %}{% url 'org:home' %}{% else %}{% url 'research:home' %}{% endif %}"
-                    class="group flex min-w-0 items-center gap-2.5 sm:gap-3"
-                    aria-label="RTUOSS home"
+        <a
+            href="{% if request.resolver_match.app_name == 'org' %}{% url 'org:home' %}{% else %}{% url 'research:home' %}{% endif %}"
+            class="group flex min-w-0 items-center gap-2.5 sm:gap-3"
+            aria-label="RTUOSS home"
+        >
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center sm:h-12 sm:w-12 lg:h-14 lg:w-14">
+                <img
+                    id="rtuoss-easter-egg"
+                    src="{% static 'research/images/emblem.png' %}"
+                    alt="RTUOSS emblem"
+                    class="max-h-11 max-w-11 object-contain transition-transform duration-200 group-hover:scale-[1.03] sm:max-h-12 sm:max-w-12 lg:max-h-14 lg:max-w-14"
                 >
-                    <div class="flex h-11 w-11 shrink-0 items-center justify-center sm:h-12 sm:w-12 lg:h-16 lg:w-16">
-                        <img
-                            id="rtuoss-easter-egg"
-                            src="{% static 'research/images/emblem.png' %}"
-                            alt="RTUOSS emblem"
-                            class="max-h-11 max-w-11 object-contain transition-transform duration-200 group-hover:scale-[1.03] sm:max-h-12 sm:max-w-12 lg:max-h-16 lg:max-w-16"
-                        >
-                    </div>
-
-                    <div class="min-w-0">
-                        <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7a4e2d] sm:text-xs">
-                            RTUOSS
-                        </p>
-
-                        <p class="truncate text-base font-bold tracking-tight text-[#3f2618] sm:text-lg lg:text-xl">
-                            {% if request.resolver_match.app_name == "easter" %}
-                                Hidden Games
-                            {% elif request.resolver_match.app_name == "org" %}
-                                Announcements
-                            {% else %}
-                                Digital Library
-                            {% endif %}
-                        </p>
-
-                        <p class="hidden text-xs text-[#765c48] sm:block">
-                            {% if request.resolver_match.app_name == "easter" %}
-                                Probability & Statistical Reasoning
-                            {% elif request.resolver_match.app_name == "org" %}
-                                Organization Updates
-                            {% else %}
-                                Institutional Research Archive
-                            {% endif %}
-                        </p>
-                    </div>
-                </a>
-
-                <!-- Sections -->
-                <div class="relative shrink-0">
-                    <button
-                        type="button"
-                        id="section-menu-button"
-                        aria-expanded="false"
-                        aria-controls="section-menu"
-                        class="inline-flex items-center gap-1.5 rounded-lg border border-[#cdb89f] bg-[#fffdf8] px-2.5 py-2 text-xs font-semibold text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc] sm:px-3 sm:text-sm"
-                    >
-                        <span>Sections</span>
-
-                        <svg
-                            id="section-menu-icon"
-                            class="h-3.5 w-3.5 transition-transform duration-200 sm:h-4 sm:w-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.51a.75.75 0 01-1.08 0l-4.25-4.51a.75.75 0 01-1.08 1.04l-4.25-4.51a.75.75 0 01.02-1.06z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                    </button>
-
-                    <div
-                        id="section-menu"
-                        class="absolute right-0 top-full z-50 mt-2 hidden w-[min(16rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-[#d8c3a8] bg-[#fffdf8] shadow-lg sm:left-0 sm:right-auto"
-                    >
-                        <div class="border-b border-[#eadcc9] px-4 py-3">
-                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#8a5a36]">
-                                RTUOSS Sections
-                            </p>
-                        </div>
-
-                        <div class="p-2">
-                            <a
-                                href="{% url 'research:home' %}"
-                                class="block rounded-lg px-3 py-3 transition hover:bg-[#f3eadc]"
-                            >
-                                <p class="text-sm font-semibold text-[#3f2618]">
-                                    Digital Library
-                                </p>
-
-                                <p class="mt-0.5 text-xs text-[#765c48]">
-                                    Institutional Research Archive
-                                </p>
-                            </a>
-
-                            <a
-                                href="{% url 'org:home' %}"
-                                class="block rounded-lg px-3 py-3 transition hover:bg-[#f3eadc]"
-                            >
-                                <p class="text-sm font-semibold text-[#3f2618]">
-                                    Announcements
-                                </p>
-
-                                <p class="mt-0.5 text-xs text-[#765c48]">
-                                    Organization Updates
-                                </p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Navigation + Search -->
-            <div class="flex w-full min-w-0 flex-col gap-2 sm:flex-row lg:w-auto lg:items-center lg:gap-3">
+            <div class="min-w-0">
+                <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7a4e2d] sm:text-xs">
+                    RTUOSS
+                </p>
 
-                <div class="flex min-w-0 gap-2">
-                    <a
-                        href="{% url 'org:home' %}"
-                        class="flex-1 rounded-lg border border-[#cdb89f] bg-[#fffdf8] px-3 py-2 text-center text-xs font-semibold text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc] sm:flex-none sm:px-4 sm:py-2.5 sm:text-sm"
-                    >
-                        Home
-                    </a>
+                <p class="truncate text-base font-bold tracking-tight text-[#3f2618] sm:text-lg lg:text-xl">
+                    {% if request.resolver_match.app_name == "easter" %}
+                        Hidden Games
+                    {% elif request.resolver_match.app_name == "org" %}
+                        Announcements
+                    {% else %}
+                        Digital Library
+                    {% endif %}
+                </p>
 
-                    <a
-                        href="{% url 'research:research_submit' %}"
-                        class="flex-1 rounded-lg bg-[#6f4328] px-3 py-2 text-center text-xs font-semibold text-white transition hover:bg-[#4d2d1c] sm:flex-none sm:px-4 sm:py-2.5 sm:text-sm"
-                    >
-                        Submit Research
-                    </a>
-                </div>
-
-                <form
-                    method="get"
-                    action="{% url 'research:search' %}"
-                    class="w-full min-w-0 lg:w-[32rem]"
-                >
-                    <label
-                        for="header-search"
-                        class="sr-only"
-                    >
-                        Search the research archive
-                    </label>
-
-                    <div class="flex min-w-0">
-                        <input
-                            id="header-search"
-                            type="search"
-                            name="q"
-                            value="{{ request.GET.q|default:'' }}"
-                            placeholder="Search research..."
-                            class="min-w-0 flex-1 rounded-l-lg border border-[#cdb89f] border-r-0 bg-[#fffdf8] px-3 py-2 text-xs text-[#4a2d1c] outline-none placeholder:text-[#9b8068] focus:border-[#8a5a36] focus:ring-2 focus:ring-[#9a6942]/20 sm:px-4 sm:py-2.5 sm:text-sm"
-                        >
-
-                        <button
-                            type="submit"
-                            class="shrink-0 rounded-r-lg bg-[#6f4328] px-3 py-2 text-xs font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c] sm:px-5 sm:py-2.5 sm:text-sm"
-                        >
-                            Search
-                        </button>
-                    </div>
-                </form>
-
+                <p class="hidden text-xs text-[#765c48] sm:block">
+                    {% if request.resolver_match.app_name == "easter" %}
+                        Probability & Statistical Reasoning
+                    {% elif request.resolver_match.app_name == "org" %}
+                        Organization Updates
+                    {% else %}
+                        Institutional Research Archive
+                    {% endif %}
+                </p>
             </div>
+        </a>
 
-        </div>
+        <nav class="hidden items-center gap-1 lg:flex">
+            <a
+                href="{% url 'research:home' %}"
+                class="rounded-lg px-3 py-2 text-sm font-semibold text-[#6f4328] transition hover:bg-[#f3eadc] hover:text-[#3f2618]"
+            >
+                Research
+            </a>
+
+            <a
+                href="{% url 'research:field_list' %}"
+                class="rounded-lg px-3 py-2 text-sm font-semibold text-[#6f4328] transition hover:bg-[#f3eadc] hover:text-[#3f2618]"
+            >
+                Research Fields
+            </a>
+
+            <a
+                href="{% url 'org:home' %}"
+                class="rounded-lg px-3 py-2 text-sm font-semibold text-[#6f4328] transition hover:bg-[#f3eadc] hover:text-[#3f2618]"
+            >
+                Announcements
+            </a>
+        </nav>
+
+        <form
+            method="get"
+            action="{% url 'research:search' %}"
+            class="hidden min-w-0 lg:block lg:w-72 xl:w-80"
+        >
+            <label
+                for="desktop-search"
+                class="sr-only"
+            >
+                Search the research archive
+            </label>
+
+            <div class="flex min-w-0">
+                <input
+                    id="desktop-search"
+                    type="search"
+                    name="q"
+                    value="{{ request.GET.q|default:'' }}"
+                    placeholder="Search research..."
+                    class="min-w-0 flex-1 rounded-l-lg border border-[#cdb89f] border-r-0 bg-[#fffdf8] px-3 py-2 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] focus:border-[#8a5a36] focus:ring-2 focus:ring-[#9a6942]/20"
+                >
+
+                <button
+                    type="submit"
+                    class="shrink-0 rounded-r-lg bg-[#6f4328] px-4 py-2 text-sm font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c]"
+                >
+                    Search
+                </button>
+            </div>
+        </form>
+
+        <button
+            type="button"
+            id="mobile-menu-button"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#cdb89f] bg-[#fffdf8] text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc] lg:hidden"
+        >
+            <span class="sr-only">Open navigation menu</span>
+
+            <svg
+                id="mobile-menu-icon"
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                />
+            </svg>
+        </button>
+
     </div>
+
+    <div
+        id="mobile-menu"
+        class="hidden border-t border-[#eadcc9] pb-4 pt-4 lg:hidden"
+    >
+        <nav class="space-y-1">
+            <a
+                href="{% url 'research:home' %}"
+                class="block rounded-lg px-3 py-3 text-sm font-semibold text-[#3f2618] transition hover:bg-[#f3eadc]"
+            >
+                Research
+            </a>
+
+            <a
+                href="{% url 'research:field_list' %}"
+                class="block rounded-lg px-3 py-3 text-sm font-semibold text-[#3f2618] transition hover:bg-[#f3eadc]"
+            >
+                Research Fields
+            </a>
+
+            <a
+                href="{% url 'org:home' %}"
+                class="block rounded-lg px-3 py-3 text-sm font-semibold text-[#3f2618] transition hover:bg-[#f3eadc]"
+            >
+                Announcements
+            </a>
+
+            <div class="my-3 border-t border-[#eadcc9]"></div>
+
+            <a
+                href="{% url 'research:research_submit' %}"
+                class="block rounded-lg bg-[#6f4328] px-3 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#4d2d1c]"
+            >
+                Submit Research
+            </a>
+        </nav>
+        <form
+            method="get"
+            action="{% url 'research:search' %}"
+            class="mt-4"
+        >
+            <label
+                for="mobile-search"
+                class="sr-only"
+            >
+                Search the research archive
+            </label>
+
+            <div class="flex min-w-0">
+                <input
+                    id="mobile-search"
+                    type="search"
+                    name="q"
+                    value="{{ request.GET.q|default:'' }}"
+                    placeholder="Search research..."
+                    class="min-w-0 flex-1 rounded-l-lg border border-[#cdb89f] border-r-0 bg-[#fffdf8] px-3 py-2.5 text-sm text-[#4a2d1c] outline-none placeholder:text-[#9b8068] focus:border-[#8a5a36] focus:ring-2 focus:ring-[#9a6942]/20"
+                >
+
+                <button
+                    type="submit"
+                    class="shrink-0 rounded-r-lg bg-[#6f4328] px-4 py-2.5 text-sm font-semibold text-[#fff8ed] transition hover:bg-[#4d2d1c]"
+                >
+                    Search
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
 </header>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const button = document.getElementById("section-menu-button");
-        const menu = document.getElementById("section-menu");
-        const icon = document.getElementById("section-menu-icon");
+        const button = document.getElementById("mobile-menu-button");
+        const menu = document.getElementById("mobile-menu");
+        const icon = document.getElementById("mobile-menu-icon");
 
         if (!button || !menu || !icon) {
             return;
@@ -185,18 +213,22 @@
 
             button.setAttribute("aria-expanded", String(!isOpen));
             menu.classList.toggle("hidden", isOpen);
-            icon.classList.toggle("rotate-180", !isOpen);
-        });
 
-        document.addEventListener("click", function (event) {
-            if (
-                !button.contains(event.target) &&
-                !menu.contains(event.target)
-            ) {
-                button.setAttribute("aria-expanded", "false");
-                menu.classList.add("hidden");
-                icon.classList.remove("rotate-180");
-            }
+            icon.innerHTML = isOpen
+                ? `
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4 6h16M4 12h16M4 18h16"
+                    />
+                `
+                : `
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 6l12 12M6 18L18 6"
+                    />
+                `;
         });
     });
 </script>

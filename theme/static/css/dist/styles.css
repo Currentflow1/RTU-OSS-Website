@@ -256,6 +256,9 @@
   .mx-auto {
     margin-inline: auto;
   }
+  .my-3 {
+    margin-block: calc(var(--spacing) * 3);
+  }
   .mt-0 {
     margin-top: calc(var(--spacing) * 0);
   }
@@ -405,6 +408,9 @@
   }
   .max-h-16 {
     max-height: calc(var(--spacing) * 16);
+  }
+  .min-h-16 {
+    min-height: calc(var(--spacing) * 16);
   }
   .min-h-24 {
     min-height: calc(var(--spacing) * 24);
@@ -567,6 +573,13 @@
   }
   .gap-8 {
     gap: calc(var(--spacing) * 8);
+  }
+  .space-y-1 {
+    :where(& > :not(:last-child)) {
+      --tw-space-y-reverse: 0;
+      margin-block-start: calc(calc(var(--spacing) * 1) * var(--tw-space-y-reverse));
+      margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
+    }
   }
   .space-y-6 {
     :where(& > :not(:last-child)) {
@@ -1686,9 +1699,24 @@
       order: 0;
     }
   }
+  .lg\:block {
+    @media (width >= 64rem) {
+      display: block;
+    }
+  }
   .lg\:flex {
     @media (width >= 64rem) {
       display: flex;
+    }
+  }
+  .lg\:hidden {
+    @media (width >= 64rem) {
+      display: none;
+    }
+  }
+  .lg\:h-14 {
+    @media (width >= 64rem) {
+      height: calc(var(--spacing) * 14);
     }
   }
   .lg\:h-16 {
@@ -1696,9 +1724,24 @@
       height: calc(var(--spacing) * 16);
     }
   }
+  .lg\:max-h-14 {
+    @media (width >= 64rem) {
+      max-height: calc(var(--spacing) * 14);
+    }
+  }
   .lg\:max-h-16 {
     @media (width >= 64rem) {
       max-height: calc(var(--spacing) * 16);
+    }
+  }
+  .lg\:min-h-20 {
+    @media (width >= 64rem) {
+      min-height: calc(var(--spacing) * 20);
+    }
+  }
+  .lg\:w-14 {
+    @media (width >= 64rem) {
+      width: calc(var(--spacing) * 14);
     }
   }
   .lg\:w-16 {
@@ -1711,6 +1754,11 @@
       width: calc(var(--spacing) * 56);
     }
   }
+  .lg\:w-72 {
+    @media (width >= 64rem) {
+      width: calc(var(--spacing) * 72);
+    }
+  }
   .lg\:w-\[32rem\] {
     @media (width >= 64rem) {
       width: 32rem;
@@ -1719,6 +1767,11 @@
   .lg\:w-auto {
     @media (width >= 64rem) {
       width: auto;
+    }
+  }
+  .lg\:max-w-14 {
+    @media (width >= 64rem) {
+      max-width: calc(var(--spacing) * 14);
     }
   }
   .lg\:max-w-16 {
@@ -1800,6 +1853,11 @@
     @media (width >= 64rem) {
       font-size: var(--text-xl);
       line-height: var(--tw-leading, var(--text-xl--line-height));
+    }
+  }
+  .xl\:w-80 {
+    @media (width >= 80rem) {
+      width: calc(var(--spacing) * 80);
     }
   }
 }
