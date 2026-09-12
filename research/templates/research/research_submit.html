@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Submit Research · RTUOSS Digital Library
+{% endblock title %}
+
+{% block content %}
+
+<section class="mx-auto max-w-4xl px-6 py-12 lg:px-8">
+
+    <div class="mb-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a5a36]">
+            Research Submission
+        </p>
+
+        <h1 class="mt-2 text-3xl font-bold tracking-tight text-[#3f2618]">
+            Submit Research
+        </h1>
+
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-[#765c48]">
+            Submit your research for review and possible publication in the
+            RTUOSS Digital Library.
+        </p>
+    </div>
+
+    <div class="rounded-xl border border-[#d8c3a8] bg-white shadow-sm">
+
+        <div class="border-b border-[#eadcc9] bg-[#fffaf2] p-6">
+            <h2 class="font-semibold text-[#3f2618]">
+                Before you submit
+            </h2>
+
+            <p class="mt-2 text-sm leading-6 text-[#765c48]">
+                Your submission will be reviewed by an administrator before it
+                becomes publicly available in the digital library.
+            </p>
+        </div>
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+            class="space-y-8 p-6"
+        >
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+                    {% for error in form.non_field_errors %}
+                        <p class="text-sm text-red-700">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div>
+                <label
+                    for="{{ form.research_field.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Research Field
+                </label>
+
+                <p class="mt-1 text-xs text-[#8a6d56]">
+                    Select the field that best represents your research.
+                </p>
+
+                <div class="mt-2">
+                    {{ form.research_field }}
+                </div>
+
+                {% for error in form.research_field.errors %}
+                    <p class="mt-2 text-sm text-red-700">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div>
+                <label
+                    for="{{ form.title.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Research Title
+                </label>
+
+                <div class="mt-2">
+                    {{ form.title }}
+                </div>
+
+                {% for error in form.title.errors %}
+                    <p class="mt-2 text-sm text-red-700">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div>
+                <label
+                    for="{{ form.authors.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Authors
+                </label>
+
+                <p class="mt-1 text-xs text-[#8a6d56]">
+                    List the authors of the research.
+                </p>
+
+                <div class="mt-2">
+                    {{ form.authors }}
+                </div>
+
+                {% for error in form.authors.errors %}
+                    <p class="mt-2 text-sm text-red-700">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div>
+                <label
+                    for="{{ form.description.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Description
+                </label>
+
+                <div class="mt-2">
+                    {{ form.description }}
+                </div>
+
+                {% for error in form.description.errors %}
+                    <p class="mt-2 text-sm text-red-700">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div>
+                <label
+                    for="{{ form.abstract.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Abstract
+                </label>
+
+                <div class="mt-2">
+                    {{ form.abstract }}
+                </div>
+
+                {% for error in form.abstract.errors %}
+                    <p class="mt-2 text-sm text-red-700">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div>
+                <label
+                    for="{{ form.document.id_for_label }}"
+                    class="block text-sm font-semibold text-[#3f2618]"
+                >
+                    Research Document
+                </label>
+
+                <p class="mt-1 text-xs text-[#8a6d56]">
+                    Upload the final research document as a PDF.
+                </p>
+
+                <div class="mt-2">
+                    {{ form.document }}
+                </div>
+
+                {% for error in form.document.errors %}
+                    <p class="mt-2 text-sm text-red-700">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div class="flex flex-col gap-3 border-t border-[#eadcc9] pt-6 sm:flex-row sm:justify-end">
+
+                <a
+                    href="{% url 'research:home' %}"
+                    class="inline-flex items-center justify-center rounded-lg border border-[#cdb89f] bg-white px-5 py-2.5 text-sm font-semibold text-[#6f4328] transition hover:bg-[#fffaf2]"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="inline-flex items-center justify-center rounded-lg bg-[#6f4328] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#4d2d1c]"
+                >
+                    Submit Research
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock content %}

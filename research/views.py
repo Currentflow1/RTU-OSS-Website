@@ -1,11 +1,15 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db import transaction
+from django.db.models import Count, Prefetch, Q
+from django.shortcuts import get_object_or_404, redirect, render
 
-from django.db.models import Prefetch
-from django.db.models import Count, Q
-
-from .models import ResearchField, ResearchTitle, ResearchPaper
-from .services import search_research
+from .forms import ResearchSubmissionForm
+from .models import ResearchField, ResearchPaper, ResearchTitle
+from .services import (
+    generate_unique_research_slug,
+    search_research,
+)
 
 
 def home(request):
@@ -43,17 +47,20 @@ def search(request):
     query = request.GET.get("q", "").strip()
     field = request.GET.get("field", "").strip()
 
-    results = search_research(
-        query=query,
-        field=field,
-    ).prefetch_related(
-        Prefetch(
-            "papers",
-            queryset=ResearchPaper.objects.only(
-                "id",
-                "research_title_id",
-                "abstract",
-            ),
+    results = (
+        search_research(
+            query=query,
+            field=field,
+        )
+        .prefetch_related(
+            Prefetch(
+                "papers",
+                queryset=ResearchPaper.objects.only(
+                    "id",
+                    "research_title_id",
+                    "abstract",
+                ),
+            )
         )
     )
 
@@ -94,7 +101,10 @@ def field_list(request):
 
 
 def field_detail(request, slug):
-    field = get_object_or_404(ResearchField, slug=slug)
+    field = get_object_or_404(
+        ResearchField,
+        slug=slug,
+    )
 
     research_queryset = (
         ResearchTitle.objects
@@ -127,7 +137,9 @@ def research_detail(request, slug):
     research = get_object_or_404(
         ResearchTitle.objects.select_related("research_field"),
         slug=slug,
-        publication_status=ResearchTitle.PublicationStatus.PUBLISHED,
+        publication_status=(
+            ResearchTitle.PublicationStatus.PUBLISHED
+        ),
     )
 
     papers = research.papers.all()
@@ -153,3 +165,162 @@ def paper_detail(request, pk):
     return render(request, "research/paper_detail.html", {
         "paper": paper,
     })
+
+
+def research_submit(request):
+    if request.method == "POST":
+        form = ResearchSubmissionForm(
+            request.POST,
+            request.FILES,
+        )
+
+        if form.is_valid():
+            with transaction.atomic():
+                research = form.save(commit=False)
+
+                research.slug = generate_unique_research_slug(
+                    research.title
+                )
+                research.submitted_by = request.user
+                research.publication_status = (
+                    ResearchTitle.PublicationStatus.PENDING
+                )
+
+                research.save()
+
+                ResearchPaper.objects.create(
+                    research_title=research,
+                    abstract=form.cleaned_data["abstract"],
+                    document=form.cleaned_data["document"],
+                )
+
+            return redirect(
+                "research:submission_success"
+            )
+
+    else:
+        form = ResearchSubmissionForm()
+
+    return render(request, "research/research_submit.html", {
+        "form": form,
+    })
+
+
+def submission_success(request):
+    return render(request, "research/submission_success.html")
+
+def is_admin(user):
+    return user.is_authenticated and user.is_superuser
+
+@login_required
+def admin_submission_list(request):
+    if not is_admin(request.user):
+        return redirect("research:home")
+
+    submissions = (
+        ResearchTitle.objects
+        .filter(
+            publication_status=(
+                ResearchTitle.PublicationStatus.PENDING
+            )
+        )
+        .select_related(
+            "research_field",
+            "submitted_by",
+        )
+        .order_by("-created_at")
+    )
+
+    return render(request, "research/admin/submission_list.html", {
+        "submissions": submissions,
+    })
+
+
+@login_required
+def admin_submission_detail(request, pk):
+    if not is_admin(request.user):
+        return redirect("research:home")
+
+    submission = get_object_or_404(
+        ResearchTitle.objects.select_related(
+            "research_field",
+            "submitted_by",
+        ),
+        pk=pk,
+    )
+
+    paper = get_object_or_404(
+        ResearchPaper,
+        research_title=submission,
+    )
+
+    return render(request, "research/admin/submission_detail.html", {
+        "submission": submission,
+        "paper": paper,
+    })
+
+
+@login_required
+def admin_submission_approve(request, pk):
+    if not is_admin(request.user):
+        return redirect("research:home")
+
+    if request.method != "POST":
+        return redirect(
+            "research:admin_submission_detail",
+            pk=pk,
+        )
+
+    submission = get_object_or_404(
+        ResearchTitle,
+        pk=pk,
+        publication_status=(
+            ResearchTitle.PublicationStatus.PENDING
+        ),
+    )
+
+    submission.publication_status = (
+        ResearchTitle.PublicationStatus.PUBLISHED
+    )
+
+    submission.save(
+        update_fields=[
+            "publication_status",
+            "updated_at",
+        ]
+    )
+
+    return redirect("research:admin_submission_list")
+
+
+@login_required
+def admin_submission_reject(request, pk):
+    if not is_admin(request.user):
+        return redirect("research:home")
+
+    if request.method != "POST":
+        return redirect(
+            "research:admin_submission_detail",
+            pk=pk,
+        )
+
+    submission = get_object_or_404(
+        ResearchTitle,
+        pk=pk,
+        publication_status=(
+            ResearchTitle.PublicationStatus.PENDING
+        ),
+    )
+
+    submission.publication_status = (
+        ResearchTitle.PublicationStatus.REJECTED
+    )
+
+    submission.save(
+        update_fields=[
+            "publication_status",
+            "updated_at",
+        ]
+    )
+
+    return redirect("research:admin_submission_list")

@@ -1,19 +1,20 @@
+from django.conf import settings
 from django.db import models
 
-# Create your models here.
+
 class ResearchField(models.Model):
-  name = models.CharField(max_length=200, unique=True)
-  slug = models.SlugField(max_length=200, unique=True)
-  description = models.TextField(blank=True)
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
+    description = models.TextField(blank=True)
 
-  created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-  class Meta:
-    ordering = ['name']
+    class Meta:
+        ordering = ["name"]
 
-  def __str__(self):
-    return self.name
+    def __str__(self):
+        return self.name
 
 
 class ResearchTitle(models.Model):
@@ -29,13 +30,28 @@ class ResearchTitle(models.Model):
         on_delete=models.PROTECT,
         related_name="research_titles",
     )
+
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=300, unique=True)
     description = models.TextField()
     authors = models.CharField(max_length=200, blank=True)
     publication_date = models.DateField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    submitted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="research_submissions",
+        null=True,
+        blank=True,
+    )
+
+    submitter_email = models.EmailField(
+        blank=True,
+        help_text="Optional email address for contacting the submitter.",
+    )
 
     publication_status = models.CharField(
         max_length=20,
@@ -48,22 +64,19 @@ class ResearchTitle(models.Model):
 
 
 class ResearchPaper(models.Model):
-  research_title = models.ForeignKey(
-    ResearchTitle,
-    on_delete=models.CASCADE,
-    related_name='papers'
-  )
+    research_title = models.ForeignKey(
+        ResearchTitle,
+        on_delete=models.CASCADE,
+        related_name="papers",
+    )
 
-  abstract = models.TextField()
-  document = models.FileField(upload_to='research/papers/')
+    abstract = models.TextField()
+    document = models.FileField(
+        upload_to="research/papers/",
+    )
 
-  created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-  def __str__(self):
-    return self.research_title.title
-
-
-
-
-
+    def __str__(self):
+        return self.research_title.title

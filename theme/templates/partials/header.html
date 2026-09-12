@@ -2,59 +2,139 @@
 
 <header class="sticky top-0 z-50 border-b border-amber-900/20 bg-[#f8f3e9]">
     <div class="mx-auto max-w-7xl px-6 py-4 lg:px-8">
+
         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
-            <a
-                id="section-switcher"
-                href="{% if request.resolver_match.app_name == 'org' %}{% url 'research:home' %}{% else %}{% url 'org:home' %}{% endif %}"
-                class="group flex shrink-0 items-center gap-4"
-                aria-label="Switch section"
-            >
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center">
-                    <img
-                        id="rtuoss-easter-egg"
-                        src="{% static 'research/images/emblem.png' %}"
-                        alt="RTUOSS emblem"
-                        class="max-h-16 max-w-16 object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+            <div class="flex shrink-0 items-center gap-4">
+
+                <a
+                    href="{% if request.resolver_match.app_name == 'org' %}{% url 'org:home' %}{% else %}{% url 'research:home' %}{% endif %}"
+                    class="group flex shrink-0 items-center gap-4"
+                    aria-label="RTUOSS home"
+                >
+                    <div class="flex h-16 w-16 shrink-0 items-center justify-center">
+                        <img
+                            id="rtuoss-easter-egg"
+                            src="{% static 'research/images/emblem.png' %}"
+                            alt="RTUOSS emblem"
+                            class="max-h-16 max-w-16 object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+                        >
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#7a4e2d]">
+                            RTUOSS
+                        </p>
+
+                        <p class="text-xl font-bold tracking-tight text-[#3f2618]">
+                            {% if request.resolver_match.app_name == "easter" %}
+                                Hidden Games
+                            {% elif request.resolver_match.app_name == "org" %}
+                                Announcements
+                            {% else %}
+                                Digital Library
+                            {% endif %}
+                        </p>
+
+                        <p class="text-xs text-[#765c48]">
+                            {% if request.resolver_match.app_name == "easter" %}
+                                Probability & Statistical Reasoning
+                            {% elif request.resolver_match.app_name == "org" %}
+                                Organization Updates
+                            {% else %}
+                                Institutional Research Archive
+                            {% endif %}
+                        </p>
+                    </div>
+                </a>
+
+                <div class="relative">
+
+                    <button
+                        type="button"
+                        id="section-menu-button"
+                        aria-expanded="false"
+                        aria-controls="section-menu"
+                        class="inline-flex items-center gap-2 rounded-lg border border-[#cdb89f] bg-[#fffdf8] px-3 py-2 text-sm font-semibold text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc]"
                     >
+                        <span>Sections</span>
+
+                        <svg
+                            id="section-menu-icon"
+                            class="h-4 w-4 transition-transform duration-200"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.51a.75.75 0 01-1.08 0l-4.25-4.51a.75.75 0 01.02-1.06z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </button>
+
+                    <div
+                        id="section-menu"
+                        class="absolute left-0 top-full z-50 mt-2 hidden w-64 overflow-hidden rounded-xl border border-[#d8c3a8] bg-[#fffdf8] shadow-lg"
+                    >
+
+                        <div class="border-b border-[#eadcc9] px-4 py-3">
+                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#8a5a36]">
+                                RTUOSS Sections
+                            </p>
+                        </div>
+
+                        <div class="p-2">
+
+                            <a
+                                href="{% url 'research:home' %}"
+                                class="block rounded-lg px-3 py-3 transition hover:bg-[#f3eadc]"
+                            >
+                                <p class="text-sm font-semibold text-[#3f2618]">
+                                    Digital Library
+                                </p>
+
+                                <p class="mt-0.5 text-xs text-[#765c48]">
+                                    Institutional Research Archive
+                                </p>
+                            </a>
+
+                            <a
+                                href="{% url 'org:home' %}"
+                                class="block rounded-lg px-3 py-3 transition hover:bg-[#f3eadc]"
+                            >
+                                <p class="text-sm font-semibold text-[#3f2618]">
+                                    Announcements
+                                </p>
+
+                                <p class="mt-0.5 text-xs text-[#765c48]">
+                                    Organization Updates
+                                </p>
+                            </a>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#7a4e2d]">
-                        RTUOSS
-                    </p>
-
-                    <h1
-                        id="section-title"
-                        class="text-xl font-bold tracking-tight text-[#3f2618]"
-                    >
-                        {% if request.resolver_match.app_name == "org" %}
-                            Announcements
-                        {% else %}
-                            Digital Library
-                        {% endif %}
-                    </h1>
-
-                    <p
-                        id="section-description"
-                        class="text-xs text-[#765c48]"
-                    >
-                        {% if request.resolver_match.app_name == "org" %}
-                            Organization Updates
-                        {% else %}
-                            Institutional Research Archive
-                        {% endif %}
-                    </p>
-                </div>
-            </a>
-
+            </div>
 
             <div class="flex w-full flex-col gap-3 lg:w-auto lg:flex-row lg:items-center">
+
                 <a
                     href="{% url 'org:home' %}"
-                    class="order-first whitespace-nowrap rounded-lg border border-[#cdb89f] bg-[#fffdf8] px-4 py-2.5 text-sm font-semibold text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc] lg:order-none"
+                    class="whitespace-nowrap rounded-lg border border-[#cdb89f] bg-[#fffdf8] px-4 py-2.5 text-sm font-semibold text-[#6f4328] transition hover:border-[#8a5a36] hover:bg-[#f3eadc]"
                 >
                     Home
+                </a>
+
+                <a
+                    href="{% url 'research:research_submit' %}"
+                    class="whitespace-nowrap rounded-lg bg-[#6f4328] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#4d2d1c]"
+                >
+                    Submit Research
                 </a>
 
                 <form
@@ -93,5 +173,52 @@
             </div>
 
         </div>
+
     </div>
 </header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const button = document.getElementById("section-menu-button");
+        const menu = document.getElementById("section-menu");
+        const icon = document.getElementById("section-menu-icon");
+
+        if (!button || !menu || !icon) {
+            return;
+        }
+
+        button.addEventListener("click", function () {
+            const isOpen = button.getAttribute("aria-expanded") === "true";
+
+            button.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+            menu.classList.toggle(
+                "hidden",
+                isOpen
+            );
+
+            icon.classList.toggle(
+                "rotate-180",
+                !isOpen
+            );
+        });
+
+        document.addEventListener("click", function (event) {
+            if (
+                !button.contains(event.target) &&
+                !menu.contains(event.target)
+            ) {
+                button.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                menu.classList.add("hidden");
+                icon.classList.remove("rotate-180");
+            }
+        });
+    });
+</script>
