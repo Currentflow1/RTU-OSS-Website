@@ -13,6 +13,7 @@ urlpatterns = [
   path("fields/<slug:slug>/", views.field_detail, name="field_detail"),
   path("research/<slug:slug>/", views.research_detail, name="research_detail"),
   path("papers/<int:pk>/", views.paper_detail, name="paper_detail"),
+  path("papers/<int:pk>/file/", views.paper_file, name="paper_file"),
   path("search/", views.search, name="search"),
 
   path("submit/", views.research_submit, name="research_submit"),

@@ -5,6 +5,7 @@ from django.db.models import Count, Prefetch, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django.utils import timezone
+from django.http import FileResponse
 
 from org.models import Announcement
 
@@ -169,6 +170,23 @@ def paper_detail(request, pk):
     return render(request, "research/paper_detail.html", {
         "paper": paper,
     })
+
+
+def paper_file(request, pk):
+    paper = get_object_or_404(
+        ResearchPaper.objects.select_related("research_title"),
+        pk=pk,
+        research_title__publication_status=ResearchTitle.PublicationStatus.PUBLISHED,
+    )
+
+    response = FileResponse(
+        paper.document.open("rb"),
+        content_type="application/pdf",
+    )
+
+    response["Content-Disposition"] = "inline"
+
+    return response
 
 
 def research_submit(request):
