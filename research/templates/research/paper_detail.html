@@ -9,12 +9,12 @@
 
 <section class="border-b border-[#d8c3a8] bg-[#f3eadc]">
     <div class="mx-auto max-w-5xl px-6 py-8 lg:px-8">
-    <a
-        href="{% url 'research:research_detail' paper.research_title.slug %}"
-        class="text-sm font-semibold text-[#8a5a36] hover:text-[#4d2d1c]"
-    >
-        ← Back to Research
-    </a>
+        <a
+            href="{% url 'research:research_detail' paper.research_title.slug %}"
+            class="text-sm font-semibold text-[#8a5a36] hover:text-[#4d2d1c]"
+        >
+            ← Back to Research
+        </a>
 
     <div class="mt-5">
         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9a6942]">
@@ -29,18 +29,16 @@
             {{ paper.research_title.research_field.name }}
         </p>
     </div>
-
 </div>
 
 </section>
 
 <section class="bg-[#fffaf2]">
     <div class="mx-auto max-w-5xl px-6 py-12 lg:px-8">
-    <div class="rounded-xl border border-[#d8c3a8] bg-[#fffdf8] p-6 shadow-sm">
-        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9a6942]">
-            Abstract
-        </p>
-
+        <div class="rounded-xl border border-[#d8c3a8] bg-[#fffdf8] p-6 shadow-sm">
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9a6942]">
+                Abstract
+            </p>
         <p class="mt-4 text-sm leading-7 text-[#765c48]">
             {{ paper.abstract }}
         </p>
@@ -48,12 +46,11 @@
 
     <div class="mt-6 overflow-hidden rounded-xl border border-[#d8c3a8] bg-[#f3eadc] shadow-sm">
         <iframe
-            src="{% static 'research/pdfjs/web/viewer.html' %}?file={{ paper.document.url|urlencode }}"
+            src="{% static 'research/pdfjs/web/viewer.html' %}?file={% url 'research:paper_file' paper.pk %}"
             class="h-[80vh] w-full border-0"
             title="Research paper PDF"
         ></iframe>
     </div>
-
 </div>
 
 </section>
