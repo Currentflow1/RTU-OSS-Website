@@ -70,6 +70,7 @@ class ResearchTitle(models.Model):
         return self.title
 
 
+
 class ResearchPaper(models.Model):
     research_title = models.ForeignKey(
         ResearchTitle,
@@ -77,7 +78,10 @@ class ResearchPaper(models.Model):
         related_name="papers",
     )
     abstract = models.TextField()
-    document = models.FileField(upload_to="research/papers/")
+    document = models.FileField(
+        upload_to="research/papers/",
+        max_length=500,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
