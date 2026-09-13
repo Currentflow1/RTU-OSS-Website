@@ -2,10 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Prefetch, Q
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
-from django.utils import timezone
 from django.http import FileResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.views.decorators.http import require_POST
 
 from org.models import Announcement
 
@@ -15,7 +15,6 @@ from .services import (
     generate_unique_research_slug,
     search_research,
 )
-
 
 def home(request):
     fields = (
@@ -57,6 +56,7 @@ def search(request):
             query=query,
             field=field,
         )
+        .select_related("research_field")
         .prefetch_related(
             Prefetch(
                 "papers",
@@ -74,7 +74,11 @@ def search(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    fields = ResearchField.objects.all()
+    fields = (
+        ResearchField.objects
+        .only("id", "name", "slug")
+        .order_by("name")
+    )
 
     return render(request, "research/search.html", {
         "query": query,
@@ -107,34 +111,44 @@ def field_list(request):
 
 def field_detail(request, slug):
     field = get_object_or_404(
-        ResearchField,
+        ResearchField.objects.annotate(
+            research_count=Count(
+                "research_titles",
+                filter=Q(
+                    research_titles__publication_status=(
+                        ResearchTitle.PublicationStatus.PUBLISHED
+                    )
+                ),
+                distinct=True,
+            ),
+            paper_count=Count(
+                "research_titles__papers",
+                filter=Q(
+                    research_titles__publication_status=(
+                        ResearchTitle.PublicationStatus.PUBLISHED
+                    )
+                ),
+                distinct=True,
+            ),
+        ),
         slug=slug,
     )
 
-    research_queryset = (
+    research_titles = (
         ResearchTitle.objects
         .filter(
             research_field=field,
             publication_status=ResearchTitle.PublicationStatus.PUBLISHED,
         )
-    )
-
-    research_count = research_queryset.count()
-
-    paper_count = ResearchPaper.objects.filter(
-        research_title__in=research_queryset
-    ).count()
-
-    research_titles = (
-        research_queryset
+        .select_related("research_field")
         .order_by("-created_at")[:8]
     )
 
     return render(request, "research/field_detail.html", {
         "field": field,
         "research_titles": research_titles,
-        "research_count": research_count,
-        "paper_count": paper_count,
+        "research_count": field.research_count,
+        "paper_count": field.paper_count,
     })
 
 
@@ -176,7 +190,9 @@ def paper_file(request, pk):
     paper = get_object_or_404(
         ResearchPaper.objects.select_related("research_title"),
         pk=pk,
-        research_title__publication_status=ResearchTitle.PublicationStatus.PUBLISHED,
+        research_title__publication_status=(
+            ResearchTitle.PublicationStatus.PUBLISHED
+        ),
     )
 
     response = FileResponse(
@@ -231,8 +247,10 @@ def research_submit(request):
 def submission_success(request):
     return render(request, "research/submission_success.html")
 
+
 def is_admin(user):
     return user.is_authenticated and user.is_superuser
+
 
 @login_required
 def admin_submission_list(request):
@@ -242,7 +260,9 @@ def admin_submission_list(request):
     submissions = (
         ResearchTitle.objects
         .filter(
-            publication_status=ResearchTitle.PublicationStatus.PENDING
+            publication_status=(
+                ResearchTitle.PublicationStatus.PENDING
+            )
         )
         .select_related(
             "research_field",
@@ -254,6 +274,7 @@ def admin_submission_list(request):
     return render(request, "research/admin_submission_list.html", {
         "submissions": submissions,
     })
+
 
 @login_required
 def admin_submission_detail(request, pk):
@@ -285,7 +306,9 @@ def admin_submission_approve(request, pk):
     submission = get_object_or_404(
         ResearchTitle,
         pk=pk,
-        publication_status=ResearchTitle.PublicationStatus.PENDING,
+        publication_status=(
+            ResearchTitle.PublicationStatus.PENDING
+        ),
     )
 
     submission.publication_status = (
@@ -313,7 +336,9 @@ def admin_submission_reject(request, pk):
     submission = get_object_or_404(
         ResearchTitle,
         pk=pk,
-        publication_status=ResearchTitle.PublicationStatus.PENDING,
+        publication_status=(
+            ResearchTitle.PublicationStatus.PENDING
+        ),
     )
 
     submission.publication_status = (
@@ -340,19 +365,25 @@ def admin_dashboard(request):
         pending=Count(
             "id",
             filter=Q(
-                publication_status=ResearchTitle.PublicationStatus.PENDING
+                publication_status=(
+                    ResearchTitle.PublicationStatus.PENDING
+                )
             ),
         ),
         published=Count(
             "id",
             filter=Q(
-                publication_status=ResearchTitle.PublicationStatus.PUBLISHED
+                publication_status=(
+                    ResearchTitle.PublicationStatus.PUBLISHED
+                )
             ),
         ),
         rejected=Count(
             "id",
             filter=Q(
-                publication_status=ResearchTitle.PublicationStatus.REJECTED
+                publication_status=(
+                    ResearchTitle.PublicationStatus.REJECTED
+                )
             ),
         ),
     )
@@ -360,7 +391,9 @@ def admin_dashboard(request):
     recent_pending = (
         ResearchTitle.objects
         .filter(
-            publication_status=ResearchTitle.PublicationStatus.PENDING
+            publication_status=(
+                ResearchTitle.PublicationStatus.PENDING
+            )
         )
         .select_related("research_field")
         .order_by("-created_at")[:5]
@@ -369,15 +402,23 @@ def admin_dashboard(request):
     recent_published = (
         ResearchTitle.objects
         .filter(
-            publication_status=ResearchTitle.PublicationStatus.PUBLISHED
+            publication_status=(
+                ResearchTitle.PublicationStatus.PUBLISHED
+            )
         )
         .select_related("research_field")
-        .order_by("-publication_date", "-created_at")[:5]
+        .order_by(
+            "-publication_date",
+            "-created_at",
+        )[:5]
     )
 
     recent_announcements = (
         Announcement.objects
-        .order_by("-published_at", "-created_at")[:5]
+        .order_by(
+            "-published_at",
+            "-created_at",
+        )[:5]
     )
 
     return render(request, "research/admin_dashboard.html", {

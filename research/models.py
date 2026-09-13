@@ -66,6 +66,14 @@ class ResearchTitle(models.Model):
         default=PublicationStatus.DRAFT,
     )
 
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["publication_status", "-created_at"],
+                name="research_pub_created_idx",
+            ),
+        ]
+
     def __str__(self):
         return self.title
 
