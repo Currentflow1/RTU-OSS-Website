@@ -2,19 +2,29 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
+
 
 from .forms import AnnouncementForm
 from .models import Announcement
 
+
 def home(request):
-  announcements = Announcement.objects.filter(
-    is_published=True
-  )
+    announcements = Announcement.objects.filter(
+        is_published=True,
+    ).order_by(
+        "-published_at",
+        "-created_at",
+    )
 
-  return render(request, "org/home.html", {
-    "announcements": announcements,
-  })
+    paginator = Paginator(announcements, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
+    return render(request, "org/home.html", {
+        "announcements": page_obj,
+        "page_obj": page_obj,
+    })
 
 def announcement_detail(request, slug):
   announcement = get_object_or_404(
@@ -150,23 +160,3 @@ def admin_announcement_delete(request, pk):
 
     return redirect("research:admin_announcement_list")
 
-from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect, render
-
-
-def home(request):
-    announcements = Announcement.objects.filter(
-        is_published=True,
-    ).order_by(
-        "-published_at",
-        "-created_at",
-    )
-
-    paginator = Paginator(announcements, 6)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, "org/home.html", {
-        "announcements": page_obj,
-        "page_obj": page_obj,
-    })
