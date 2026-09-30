@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
     RTUOSS Digital Library
@@ -6,8 +7,18 @@
 
 {% block content %}
 
-<section class="border-b border-[#d8c3a8] bg-[#6f4328] text-[#fffaf2]">
-    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+<section
+    class="relative overflow-hidden border-b border-[#d8c3a8] text-[#fffaf2]"
+>
+    <div
+        class="absolute inset-0 bg-cover bg-position-[center_65%] sm:bg-position-[center_55%] lg:bg-position-[center_45%]"
+        style='background-image: url("{% static "research/images/MAB.jpg" %}");'
+    ></div>
+    <!-- Brown overlay -->
+    <div class="absolute inset-0 bg-[#4a2d1c]/70"></div>
+
+    <!-- Content -->
+    <div class="relative mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <div class="max-w-3xl">
 
             <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[#e6cfad]">
@@ -37,6 +48,7 @@
         </div>
     </div>
 </section>
+
 
 <section class="bg-[#fffaf2]">
     <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">

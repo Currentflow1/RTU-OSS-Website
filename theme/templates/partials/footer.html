@@ -1,38 +1,62 @@
+{% load static %}
+
 <footer class="border-t border-[#6f4328] bg-[#3f2618] text-[#f3eadc]">
-    <div class="mx-auto max-w-7xl px-6 py-10 lg:px-8">
-        <div class="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-            <p class="text-lg font-semibold tracking-tight">
-                RTUOSS
-            </p>
+    <div class="mx-auto max-w-7xl px-6 py-8 lg:px-8">
 
-            <p class="mt-1 text-sm text-[#d8c3a8]">
-                Organization & Digital Library
-            </p>
+        <div class="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
 
-            <p class="mt-4 max-w-md text-sm leading-6 text-[#bfa991]">
-                A digital space for RTUOSS announcements, institutional
-                research, and academic records.
-            </p>
+            <!-- Branding -->
+            <div class="flex items-center gap-4">
+
+                <!-- Emblems -->
+                <div class="flex items-center gap-2 shrink-0">
+                    <img
+                        src="{% static 'research/images/emblem.png' %}"
+                        alt="RTUOSS emblem"
+                        class="h-12 w-12 object-contain"
+                    >
+
+                    <div class="h-8 w-px bg-[#8c6548]"></div>
+
+                    <img
+                        src="{% static 'research/images/rtu_nobg.png' %}"
+                        alt="University emblem"
+                        class="h-12 w-12 object-contain"
+                    >
+                </div>
+
+                <!-- Text -->
+                <div class="border-l border-[#6f4328] pl-4">
+                    <p class="text-lg font-semibold tracking-tight">
+                        RTUOSS
+                    </p>
+
+                    <p class="text-sm text-[#d8c3a8]">
+                        Organization & Digital Library
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Description -->
+            <div class="max-w-md sm:text-right">
+                <p class="text-sm leading-6 text-[#bfa991]">
+                    A digital space for RTUOSS announcements, institutional
+                    research, and academic records.
+                </p>
+            </div>
+
         </div>
 
-        <div class="text-sm text-[#d8c3a8] sm:text-right">
-            <p>
-                © {% now "Y" %} RTUOSS
+        <div class="mt-7 flex flex-col gap-2 border-t border-[#6f4328]/60 pt-5 text-xs sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-[#a99076]">
+                RTUOSS Digital Library · Institutional Research Archive
             </p>
 
-            <p class="mt-1">
-                All rights reserved.
+            <p class="text-[#a99076]">
+                © {% now "Y" %} RTUOSS · All rights reserved.
             </p>
         </div>
 
     </div>
-
-    <div class="mt-8 border-t border-[#6f4328]/60 pt-5">
-        <p class="text-xs text-[#a99076]">
-            RTUOSS Digital Library · Institutional Research Archive
-        </p>
-    </div>
-</div>
-
 </footer>
