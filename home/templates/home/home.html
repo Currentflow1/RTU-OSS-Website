@@ -4,15 +4,24 @@
 {% block content %}
 
 <style>
-    /* One page-load moment: the bell curve draws itself once. */
+    /* The bell curve draws itself slowly, holds, fades out, and repeats. */
     .curve-line {
         stroke-dasharray: 700;
         stroke-dashoffset: 700;
-        animation: draw-curve 1.8s cubic-bezier(.22,.61,.36,1) .3s forwards;
+        animation: draw-curve 10s ease-in-out infinite;
     }
-    .curve-fill { opacity: 0; animation: fade-in .9s ease 1.4s forwards; }
-    @keyframes draw-curve { to { stroke-dashoffset: 0; } }
-    @keyframes fade-in { to { opacity: 1; } }
+    .curve-fill { opacity: 0; animation: fill-curve 10s ease-in-out infinite; }
+    @keyframes draw-curve {
+        0%   { stroke-dashoffset: 700; opacity: 1; }
+        50%  { stroke-dashoffset: 0;   opacity: 1; }
+        88%  { stroke-dashoffset: 0;   opacity: 1; }
+        100% { stroke-dashoffset: 0;   opacity: 0; }
+    }
+    @keyframes fill-curve {
+        0%, 35% { opacity: 0; }
+        60%, 88% { opacity: 1; }
+        100% { opacity: 0; }
+    }
     @media (prefers-reduced-motion: reduce) {
         .curve-line { animation: none; stroke-dashoffset: 0; }
         .curve-fill { animation: none; opacity: 1; }
@@ -92,27 +101,6 @@
     </div>
 </section>
 
-<!-- AT A GLANCE -->
-<section class="border-b border-[#d8c6b1] bg-[#eee5d7]">
-    <div class="mx-auto max-w-7xl px-4 sm:px-8 lg:px-10">
-        <dl class="grid sm:grid-cols-3">
-            <div class="border-b border-[#d8c6b1] py-5 sm:border-b-0 sm:border-r sm:py-6 sm:pr-6 lg:pr-8">
-                <dt class="text-sm text-[#9a7658]">Discipline</dt>
-                <dd class="mt-1 text-base font-medium sm:text-lg">Statistics</dd>
-            </div>
-            <div class="border-b border-[#d8c6b1] py-5 sm:border-b-0 sm:border-r sm:px-6 sm:py-6 lg:px-8">
-                <dt class="text-sm text-[#9a7658]">Foundation</dt>
-                <dd class="mt-1 text-base font-medium sm:text-lg">Mathematics and probability</dd>
-            </div>
-            <div class="py-5 sm:py-6 sm:pl-6 lg:pl-8">
-                <dt class="text-sm text-[#9a7658]">Application</dt>
-                <dd class="mt-1 text-base font-medium sm:text-lg">Data and statistical analysis</dd>
-            </div>
-        </dl>
-    </div>
-</section>
-
-<!-- OBJECTIVES -->
 <section>
     <div class="mx-auto max-w-7xl px-4 py-14 sm:px-8 sm:py-24 lg:px-10">
         <div class="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
