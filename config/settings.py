@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
 
+    'home',
     'research',
     'org',
     'easter',

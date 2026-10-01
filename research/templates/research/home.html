@@ -7,18 +7,9 @@
 
 {% block content %}
 
-<section
-    class="relative overflow-hidden border-b border-[#d8c3a8] text-[#fffaf2]"
->
-    <div
-        class="absolute inset-0 bg-cover bg-position-[center_65%] sm:bg-position-[center_55%] lg:bg-position-[center_45%]"
-        style='background-image: url("{% static "research/images/MAB.jpg" %}");'
-    ></div>
-    <!-- Brown overlay -->
-    <div class="absolute inset-0 bg-[#4a2d1c]/70"></div>
+<section class="border-b border-[#d8c3a8] bg-[#3f2618] text-[#fffaf2]">
 
-    <!-- Content -->
-    <div class="relative mx-auto max-w-7xl px-6 py-20 lg:px-8">
+    <div class="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div class="max-w-3xl">
 
             <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[#e6cfad]">
@@ -29,13 +20,12 @@
                 Research Archive
             </h1>
 
-            <p class="mt-5 max-w-2xl text-base leading-7 text-[#f3eadc]">
+            <p class="mt-4 max-w-2xl text-base leading-7 text-[#f3eadc]">
                 An institutional archive of research and scholarly work
-                across multiple academic fields. Browse the collection
-                or search the archive to locate specific research.
+                across multiple academic fields.
             </p>
 
-            <div class="mt-7">
+            <div class="mt-6">
                 <a
                     href="{% url 'research:search' %}"
                     class="inline-flex items-center rounded-lg bg-[#fffaf2] px-5 py-2.5 text-sm font-semibold text-[#4a2d1c] transition hover:bg-[#f3eadc]"
@@ -51,7 +41,7 @@
 
 
 <section class="bg-[#fffaf2]">
-    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+    <div class="mx-auto max-w-7xl px-6 py-12 lg:px-8">
 
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 
@@ -64,8 +54,8 @@
                     Research Fields
                 </h2>
 
-                <p class="mt-2 max-w-2xl text-sm leading-6 text-[#765c48]">
-                    Explore research organized by academic discipline.
+                <p class="mt-2 text-sm leading-6 text-[#765c48]">
+                    Explore research by academic discipline.
                 </p>
             </div>
 
@@ -81,42 +71,22 @@
 
         {% if fields %}
 
-            <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
                 {% for field in fields %}
 
                     <a
                         href="{% url 'research:field_detail' field.slug %}"
-                        class="group rounded-xl border border-[#d8c3a8] bg-[#f8f3e9] p-6 transition hover:-translate-y-0.5 hover:border-[#b99670] hover:bg-[#f3eadc]"
+                        class="group rounded-lg border border-[#d8c3a8] bg-[#f8f3e9] p-5 transition hover:-translate-y-0.5 hover:border-[#b99670] hover:bg-[#f3eadc]"
                     >
 
-                        <div class="flex items-start justify-between gap-4">
+                        <div class="flex items-center justify-between gap-3">
 
-                            <div class="min-w-0">
+                            <h3 class="min-w-0 truncate text-base font-semibold text-[#3f2618] group-hover:text-[#6f4328]">
+                                {{ field.name }}
+                            </h3>
 
-                                <h3 class="text-lg font-semibold text-[#3f2618] group-hover:text-[#6f4328]">
-                                    {{ field.name }}
-                                </h3>
-
-                                <p class="mt-2 line-clamp-3 text-sm leading-6 text-[#765c48]">
-                                    {{ field.description }}
-                                </p>
-
-                                {% if field.research_count %}
-                                    <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-[#8a5a36]">
-                                        {{ field.research_count }}
-                                        research
-                                        {% if field.research_count == 1 %}
-                                            work
-                                        {% else %}
-                                            works
-                                        {% endif %}
-                                    </p>
-                                {% endif %}
-
-                            </div>
-
-                            <span class="mt-1 shrink-0 text-lg text-[#9a6942]">
+                            <span class="shrink-0 text-lg text-[#9a6942]">
                                 →
                             </span>
 
@@ -130,7 +100,7 @@
 
         {% else %}
 
-            <div class="mt-8 rounded-xl border border-dashed border-[#d8c3a8] bg-[#f8f3e9] px-6 py-10 text-center">
+            <div class="mt-6 rounded-lg border border-dashed border-[#d8c3a8] bg-[#f8f3e9] px-6 py-8 text-center">
 
                 <p class="text-sm text-[#765c48]">
                     No research fields have been added yet.
@@ -143,8 +113,9 @@
     </div>
 </section>
 
+
 <section class="border-y border-[#d8c3a8] bg-[#f3eadc]">
-    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+    <div class="mx-auto max-w-7xl px-6 py-12 lg:px-8">
 
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 
@@ -157,8 +128,8 @@
                     Recent Research
                 </h2>
 
-                <p class="mt-2 max-w-2xl text-sm leading-6 text-[#765c48]">
-                    Recently added research from across the archive.
+                <p class="mt-2 text-sm leading-6 text-[#765c48]">
+                    Recently added research from the archive.
                 </p>
             </div>
 
@@ -174,13 +145,13 @@
 
         {% if recent_research %}
 
-            <div class="mt-8 divide-y divide-[#d8c3a8] rounded-xl border border-[#d8c3a8] bg-[#fffaf2]">
+            <div class="mt-6 divide-y divide-[#d8c3a8] rounded-lg border border-[#d8c3a8] bg-[#fffaf2]">
 
                 {% for research in recent_research %}
 
-                    <article class="p-6 transition first:rounded-t-xl last:rounded-b-xl hover:bg-[#f8f3e9]">
+                    <article class="p-5 transition hover:bg-[#f8f3e9]">
 
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="flex items-start justify-between gap-4">
 
                             <div class="min-w-0">
 
@@ -201,7 +172,7 @@
 
                                 </div>
 
-                                <h3 class="mt-2 text-lg font-semibold text-[#3f2618]">
+                                <h3 class="mt-1.5 text-base font-semibold text-[#3f2618]">
 
                                     <a
                                         href="{% url 'research:research_detail' research.slug %}"
@@ -212,23 +183,19 @@
 
                                 </h3>
 
-                                <p class="mt-2 line-clamp-2 text-sm leading-6 text-[#765c48]">
-                                    {{ research.description }}
-                                </p>
-
-                                {% if research.authors %}
-                                    <p class="mt-3 text-xs text-[#8a6d55]">
-                                        {{ research.authors }}
-                                    </p>
-                                {% endif %}
-
                             </div>
 
                             <a
                                 href="{% url 'research:research_detail' research.slug %}"
                                 class="shrink-0 text-sm font-semibold text-[#6f4328] hover:text-[#3f2618]"
                             >
-                                View research →
+                                <span class="hidden sm:inline">
+                                    View research →
+                                </span>
+
+                                <span class="sm:hidden">
+                                    →
+                                </span>
                             </a>
 
                         </div>
@@ -241,7 +208,7 @@
 
         {% else %}
 
-            <div class="mt-8 rounded-xl border border-dashed border-[#d8c3a8] bg-[#fffaf2] px-6 py-10 text-center">
+            <div class="mt-6 rounded-lg border border-dashed border-[#d8c3a8] bg-[#fffaf2] px-6 py-8 text-center">
 
                 <p class="text-sm text-[#765c48]">
                     No published research is available yet.
@@ -254,12 +221,13 @@
     </div>
 </section>
 
+
 <section class="bg-[#fffaf2]">
-    <div class="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+    <div class="mx-auto max-w-7xl px-6 py-10 lg:px-8">
 
-        <div class="rounded-xl border border-[#d8c3a8] bg-[#f8f3e9] px-6 py-8 sm:px-8">
+        <div class="rounded-lg border border-[#d8c3a8] bg-[#f8f3e9] px-6 py-7 sm:px-8">
 
-            <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
 
@@ -272,7 +240,7 @@
                     </h2>
 
                     <p class="mt-2 max-w-2xl text-sm leading-6 text-[#765c48]">
-                        Search the full collection by research title, author,
+                        Search the full collection by title, author,
                         field, description, or abstract.
                     </p>
 
@@ -292,4 +260,5 @@
 
     </div>
 </section>
+
 {% endblock content %}

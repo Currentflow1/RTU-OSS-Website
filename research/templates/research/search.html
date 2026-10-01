@@ -7,15 +7,15 @@
 {% block content %}
 
 <section class="border-b border-[#d8c3a8] bg-[#f3eadc]">
-    <div class="mx-auto max-w-5xl px-6 py-8 lg:px-8">
+    <div class="mx-auto max-w-5xl px-6 py-7 lg:px-8">
 
         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#9a6942]">
             Archive Search
         </p>
 
-        <h2 class="mt-2 text-2xl font-bold tracking-tight text-[#3f2618] sm:text-3xl">
+        <h1 class="mt-2 text-2xl font-bold tracking-tight text-[#3f2618] sm:text-3xl">
             Search Results
-        </h2>
+        </h1>
 
         <p class="mt-2 text-sm text-[#765c48]">
             Search the RTUOSS institutional research archive.
@@ -26,17 +26,17 @@
 
 
 <section class="bg-[#fffaf2]">
-    <div class="mx-auto max-w-5xl px-6 py-10 lg:px-8">
+    <div class="mx-auto max-w-5xl px-6 py-8 lg:px-8">
 
         <form
             method="get"
             action="{% url 'research:search' %}"
-            class="mb-8 rounded-xl border border-[#d8c3a8] bg-[#fffdf8] p-4"
+            class="mb-6 rounded-lg border border-[#d8c3a8] bg-[#fffdf8] p-4"
         >
 
             <div class="flex flex-col gap-3 sm:flex-row">
 
-                <div class="flex-1">
+                <div class="min-w-0 flex-1">
 
                     <label
                         for="search-query"
@@ -57,7 +57,7 @@
                 </div>
 
 
-                <div class="sm:w-56">
+                <div class="sm:w-52">
 
                     <label
                         for="research-field"
@@ -77,12 +77,14 @@
                         </option>
 
                         {% for item in fields %}
+
                             <option
                                 value="{{ item.slug }}"
                                 {% if field == item.slug %}selected{% endif %}
                             >
                                 {{ item.name }}
                             </option>
+
                         {% endfor %}
 
                     </select>
@@ -110,4 +112,5 @@
 
     </div>
 </section>
+
 {% endblock content %}

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* One page-load moment: the bell curve draws itself once. */
+    .curve-line {
+        stroke-dasharray: 700;
+        stroke-dashoffset: 700;
+        animation: draw-curve 1.8s cubic-bezier(.22,.61,.36,1) .3s forwards;
+    }
+    .curve-fill { opacity: 0; animation: fade-in .9s ease 1.4s forwards; }
+    @keyframes draw-curve { to { stroke-dashoffset: 0; } }
+    @keyframes fade-in { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+        .curve-line { animation: none; stroke-dashoffset: 0; }
+        .curve-fill { animation: none; opacity: 1; }
+    }
+</style>
+
+<main class="bg-[#f8f3e9] text-[#3f2618]">
+
+<!-- HERO -->
+<section class="border-b border-[#d8c6b1]">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-8 sm:py-12 lg:px-10 lg:py-14">
+        <div class="grid gap-9 lg:grid-cols-2 lg:items-stretch lg:gap-16">
+
+            <div class="flex min-w-0 flex-col lg:justify-between">
+                <div class="flex items-center gap-2.5 sm:gap-3">
+                    <img src="{% static 'research/images/rtu_emblem.png' %}"
+                         alt="Rizal Technological University emblem"
+                         class="h-9 w-9 object-contain sm:h-12 sm:w-12">
+                    <span class="h-7 w-px bg-[#cdb9a3] sm:h-8"></span>
+                    <img src="{% static 'research/images/stats_emblem.png' %}"
+                         alt="Statistics emblem"
+                         class="h-9 w-9 object-contain sm:h-12 sm:w-12">
+                    <span class="h-7 w-px bg-[#cdb9a3] sm:h-8"></span>
+                    <img src="{% static 'research/images/oss_emblem.png' %}"
+                         alt="Organization of Statistics Students emblem"
+                         class="h-9 w-9 object-contain sm:h-12 sm:w-12">
+                </div>
+
+                <div>
+                <p class="mt-7 text-sm font-medium text-[#8a5a36] lg:mt-0">
+                    Rizal Technological University
+                </p>
+
+                <h1 class="mt-3 font-serif text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl lg:text-[4.5rem] lg:leading-[1]">
+                    Bachelor of Science
+                    <span class="block text-[#8a5a36]">in Statistics</span>
+                </h1>
+
+                <p class="mt-5 max-w-lg text-base leading-7 text-[#765c48] sm:mt-7 sm:text-lg sm:leading-8">
+                    A program built on statistical theory, mathematical
+                    foundations, computation, and the careful analysis of data.
+                </p>
+                </div>
+            </div>
+
+            <!-- Photo with a distribution curve laid over it -->
+            <div class="min-w-0">
+                <div class="relative overflow-hidden border border-[#cdb9a3] bg-[#eee5d7] p-1.5 sm:p-2">
+                    <img src="{% static 'research/images/MAB.jpg' %}"
+                         alt="Rizal Technological University campus"
+                         class="aspect-[4/3] w-full object-cover">
+
+                    <div class="absolute inset-x-1.5 bottom-1.5 bg-gradient-to-t from-[#3f2618]/80 to-transparent px-3 pb-2 pt-10 sm:inset-x-2 sm:bottom-2 sm:px-4 sm:pb-3 sm:pt-16">
+                        <svg viewBox="0 0 400 130" class="h-auto w-full" role="img"
+                             aria-label="A bell-shaped normal distribution curve with the mean marked at the center">
+                            <path class="curve-fill"
+                                  d="M0,120 C90,120 130,14 200,14 C270,14 310,120 400,120 Z"
+                                  fill="#f8f3e9" fill-opacity=".22"/>
+                            <path class="curve-line"
+                                  d="M0,120 C90,120 130,14 200,14 C270,14 310,120 400,120"
+                                  fill="none" stroke="#f8f3e9" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="200" y1="14" x2="200" y2="120"
+                                  stroke="#f8f3e9" stroke-width="1.5" stroke-dasharray="4 4"/>
+                            <text x="208" y="34" fill="#f8f3e9" font-size="14" font-style="italic" font-family="Georgia, serif">μ</text>
+                            <line x1="0" y1="120" x2="400" y2="120" stroke="#f8f3e9" stroke-opacity=".5"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <p class="mt-3 flex items-center justify-between gap-4 border-t border-[#cdb9a3] pt-3 text-xs text-[#9a7658] sm:text-sm">
+                    <span>BS Statistics</span>
+                    <span>RTU</span>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- AT A GLANCE -->
+<section class="border-b border-[#d8c6b1] bg-[#eee5d7]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-8 lg:px-10">
+        <dl class="grid sm:grid-cols-3">
+            <div class="border-b border-[#d8c6b1] py-5 sm:border-b-0 sm:border-r sm:py-6 sm:pr-6 lg:pr-8">
+                <dt class="text-sm text-[#9a7658]">Discipline</dt>
+                <dd class="mt-1 text-base font-medium sm:text-lg">Statistics</dd>
+            </div>
+            <div class="border-b border-[#d8c6b1] py-5 sm:border-b-0 sm:border-r sm:px-6 sm:py-6 lg:px-8">
+                <dt class="text-sm text-[#9a7658]">Foundation</dt>
+                <dd class="mt-1 text-base font-medium sm:text-lg">Mathematics and probability</dd>
+            </div>
+            <div class="py-5 sm:py-6 sm:pl-6 lg:pl-8">
+                <dt class="text-sm text-[#9a7658]">Application</dt>
+                <dd class="mt-1 text-base font-medium sm:text-lg">Data and statistical analysis</dd>
+            </div>
+        </dl>
+    </div>
+</section>
+
+<!-- OBJECTIVES -->
+<section>
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-8 sm:py-24 lg:px-10">
+        <div class="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
+
+            <div>
+                <h2 class="font-serif text-3xl font-semibold leading-tight tracking-[-0.02em] sm:text-5xl">
+                    Program objectives
+                </h2>
+                <div class="mt-5 h-px w-14 bg-[#8a5a36] sm:mt-6"></div>
+                <p class="mt-5 max-w-sm text-base leading-7 text-[#765c48] sm:mt-6 sm:leading-8">
+                    The program develops graduates with statistical knowledge,
+                    practical skills, analytical ability, and the capacity to
+                    adapt to professional and academic environments.
+                </p>
+            </div>
+
+            <ul class="border-t border-[#cdb9a3]">
+                <li class="flex gap-4 border-b border-[#cdb9a3] py-5 sm:gap-5 sm:py-7">
+                    <span class="mt-3 h-px w-5 shrink-0 bg-[#8a5a36] sm:w-6"></span>
+                    <p class="text-base leading-7 text-[#4d3425] sm:text-lg sm:leading-8">
+                        Technologically competent and armed with practical skills
+                        congruent to the needs of the industry and the workplace
+                        in general.
+                    </p>
+                </li>
+                <li class="flex gap-4 border-b border-[#cdb9a3] py-5 sm:gap-5 sm:py-7">
+                    <span class="mt-3 h-px w-5 shrink-0 bg-[#8a5a36] sm:w-6"></span>
+                    <p class="text-base leading-7 text-[#4d3425] sm:text-lg sm:leading-8">
+                        Knowledgeable of the proper application of statistical
+                        methodology and have experience in using the computing
+                        tools for effective statistical analysis.
+                    </p>
+                </li>
+                <li class="flex gap-4 border-b border-[#cdb9a3] py-5 sm:gap-5 sm:py-7">
+                    <span class="mt-3 h-px w-5 shrink-0 bg-[#8a5a36] sm:w-6"></span>
+                    <p class="text-base leading-7 text-[#4d3425] sm:text-lg sm:leading-8">
+                        Proficient problem solvers through analysis of data.
+                    </p>
+                </li>
+                <li class="flex gap-4 border-b border-[#cdb9a3] py-5 sm:gap-5 sm:py-7">
+                    <span class="mt-3 h-px w-5 shrink-0 bg-[#8a5a36] sm:w-6"></span>
+                    <p class="text-base leading-7 text-[#4d3425] sm:text-lg sm:leading-8">
+                        Prepared to pursue graduate studies.
+                    </p>
+                </li>
+                <li class="flex gap-4 border-b border-[#cdb9a3] py-5 sm:gap-5 sm:py-7">
+                    <span class="mt-3 h-px w-5 shrink-0 bg-[#8a5a36] sm:w-6"></span>
+                    <p class="text-base leading-7 text-[#4d3425] sm:text-lg sm:leading-8">
+                        Adaptive, flexible, and driven to practice the profession.
+                    </p>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>
+
+</main>
+
+{% endblock %}

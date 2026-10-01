@@ -16,6 +16,7 @@ from .services import (
     search_research,
 )
 
+
 def home(request):
     fields = (
         ResearchField.objects
@@ -29,22 +30,42 @@ def home(request):
                 ),
             )
         )
+        .only(
+            "id",
+            "name",
+            "slug",
+        )
         .order_by("name")[:6]
     )
 
     recent_research = (
         ResearchTitle.objects
         .filter(
-            publication_status=ResearchTitle.PublicationStatus.PUBLISHED
+            publication_status=(
+                ResearchTitle.PublicationStatus.PUBLISHED
+            )
         )
         .select_related("research_field")
-        .order_by("-created_at")[:6]
+        .only(
+            "id",
+            "title",
+            "slug",
+            "research_field__id",
+            "research_field__name",
+            "research_field__slug",
+            "publication_date",
+        )
+        .order_by("-created_at")[:5]
     )
 
-    return render(request, "research/home.html", {
-        "fields": fields,
-        "recent_research": recent_research,
-    })
+    return render(
+        request,
+        "research/home.html",
+        {
+            "fields": fields,
+            "recent_research": recent_research,
+        },
+    )
 
 
 def search(request):
@@ -57,6 +78,18 @@ def search(request):
             field=field,
         )
         .select_related("research_field")
+        .only(
+            "id",
+            "title",
+            "slug",
+            "description",
+            "authors",
+            "publication_date",
+            "created_at",
+            "research_field__id",
+            "research_field__name",
+            "research_field__slug",
+        )
         .prefetch_related(
             Prefetch(
                 "papers",
@@ -76,16 +109,24 @@ def search(request):
 
     fields = (
         ResearchField.objects
-        .only("id", "name", "slug")
+        .only(
+            "id",
+            "name",
+            "slug",
+        )
         .order_by("name")
     )
 
-    return render(request, "research/search.html", {
-        "query": query,
-        "field": field,
-        "page_obj": page_obj,
-        "fields": fields,
-    })
+    return render(
+        request,
+        "research/search.html",
+        {
+            "query": query,
+            "field": field,
+            "page_obj": page_obj,
+            "fields": fields,
+        },
+    )
 
 
 def field_list(request):
@@ -104,9 +145,13 @@ def field_list(request):
         .order_by("name")
     )
 
-    return render(request, "research/field_list.html", {
-        "fields": fields,
-    })
+    return render(
+        request,
+        "research/field_list.html",
+        {
+            "fields": fields,
+        },
+    )
 
 
 def field_detail(request, slug):
@@ -138,18 +183,36 @@ def field_detail(request, slug):
         ResearchTitle.objects
         .filter(
             research_field=field,
-            publication_status=ResearchTitle.PublicationStatus.PUBLISHED,
+            publication_status=(
+                ResearchTitle.PublicationStatus.PUBLISHED
+            ),
         )
         .select_related("research_field")
+        .only(
+            "id",
+            "title",
+            "slug",
+            "description",
+            "authors",
+            "publication_date",
+            "created_at",
+            "research_field__id",
+            "research_field__name",
+            "research_field__slug",
+        )
         .order_by("-created_at")[:8]
     )
 
-    return render(request, "research/field_detail.html", {
-        "field": field,
-        "research_titles": research_titles,
-        "research_count": field.research_count,
-        "paper_count": field.paper_count,
-    })
+    return render(
+        request,
+        "research/field_detail.html",
+        {
+            "field": field,
+            "research_titles": research_titles,
+            "research_count": field.research_count,
+            "paper_count": field.paper_count,
+        },
+    )
 
 
 def research_detail(request, slug):
@@ -163,10 +226,14 @@ def research_detail(request, slug):
 
     papers = research.papers.all()
 
-    return render(request, "research/research_detail.html", {
-        "research": research,
-        "papers": papers,
-    })
+    return render(
+        request,
+        "research/research_detail.html",
+        {
+            "research": research,
+            "papers": papers,
+        },
+    )
 
 
 def paper_detail(request, pk):
@@ -181,9 +248,13 @@ def paper_detail(request, pk):
         ),
     )
 
-    return render(request, "research/paper_detail.html", {
-        "paper": paper,
-    })
+    return render(
+        request,
+        "research/paper_detail.html",
+        {
+            "paper": paper,
+        },
+    )
 
 
 def paper_file(request, pk):
@@ -239,13 +310,20 @@ def research_submit(request):
     else:
         form = ResearchSubmissionForm()
 
-    return render(request, "research/research_submit.html", {
-        "form": form,
-    })
+    return render(
+        request,
+        "research/research_submit.html",
+        {
+            "form": form,
+        },
+    )
 
 
 def submission_success(request):
-    return render(request, "research/submission_success.html")
+    return render(
+        request,
+        "research/submission_success.html",
+    )
 
 
 def is_admin(user):
@@ -271,9 +349,13 @@ def admin_submission_list(request):
         .order_by("-created_at")
     )
 
-    return render(request, "research/admin_submission_list.html", {
-        "submissions": submissions,
-    })
+    return render(
+        request,
+        "research/admin_submission_list.html",
+        {
+            "submissions": submissions,
+        },
+    )
 
 
 @login_required
@@ -291,10 +373,14 @@ def admin_submission_detail(request, pk):
 
     paper = submission.papers.first()
 
-    return render(request, "research/admin_submission_detail.html", {
-        "submission": submission,
-        "paper": paper,
-    })
+    return render(
+        request,
+        "research/admin_submission_detail.html",
+        {
+            "submission": submission,
+            "paper": paper,
+        },
+    )
 
 
 @login_required
@@ -421,9 +507,13 @@ def admin_dashboard(request):
         )[:5]
     )
 
-    return render(request, "research/admin_dashboard.html", {
-        "counts": counts,
-        "recent_pending": recent_pending,
-        "recent_published": recent_published,
-        "recent_announcements": recent_announcements,
-    })
+    return render(
+        request,
+        "research/admin_dashboard.html",
+        {
+            "counts": counts,
+            "recent_pending": recent_pending,
+            "recent_published": recent_published,
+            "recent_announcements": recent_announcements,
+        },
+    )
